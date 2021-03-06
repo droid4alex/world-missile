@@ -4,15 +4,21 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Missile Game</title>  
+  <title></title>  
   <link rel="stylesheet" type="text/css" href="./src/reset.css">
   <link rel="stylesheet" type="text/css" href="./src/main.css">
-  <script type="text/javascript" src="./src/index.js"></script>
 </head>
 
 <body>
-  <h1>Missile Game</h1>
-  <canvas></canvas>
+  <div id="main">
+    <div id="header">
+      <div id="intercepted-count">Missiles Intercepted: 0</div>
+      <div id="score-count">Score: 0</div>
+      <div id="level-count">Level: 0</div>
+    </div>
+    <div id="canvas"><canvas></canvas></div>
+  </div>
+  <script src="./bundle.js"></script>
 </body>
 
 </html>

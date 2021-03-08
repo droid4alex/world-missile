@@ -26,7 +26,7 @@ img.onload = function () {
 
 img.width = canvas.width;
 img.height = canvas.height;
-img.src = 'world-map.png';
+img.src = './src/world-map.png';
 
 function generateMissile(color){
   let random = Math.floor(Math.random() * 10);
@@ -54,7 +54,7 @@ function animate(){
   explosions.forEach(explosion => {
     explosion.render()
   })
-  let timeStop = new Date();
+  timeStop = new Date();
   if (Math.floor(Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000)>59)){
     alert("You lost! All missiles must be intercepted within 60 seconds.")
     levelCount = levelCount - 1;
@@ -71,7 +71,6 @@ canvas.addEventListener('click', (e) => {
       explosions.push(new Explosion(missile, canvas, c))
       interceptedCount = interceptedCount + 1;
       intercepted.innerHTML = "Missiles Intercepted: " + interceptedCount + " of " + levelCount*5;
-      console.log(missile)
     }
     else {
       missilesRemaining.push(missile)
@@ -93,7 +92,7 @@ canvas.addEventListener('mousemove', (e) => {
     })
   }
   if (interceptedCount === levelCount * 5){
-    let timeStop = new Date();
+    timeStop = new Date();
     let seconds = Math.abs((timeStart.getTime() - timeStop.getTime())/1000);
     scoreCount = scoreCount + 100;
     if (Math.floor(seconds)<15){

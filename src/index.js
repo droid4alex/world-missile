@@ -26,7 +26,7 @@ img.onload = function () {
 
 img.width = canvas.width;
 img.height = canvas.height;
-img.src = 'https://i.imgur.com/SBpCglW.jpg';
+img.src = 'https://github.com/droid4alex/world-missile/blob/main/src/world-map.png?raw=true';
 
 function generateMissile(color){
   let random = Math.floor(Math.random() * 10);

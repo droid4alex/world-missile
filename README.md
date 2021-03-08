@@ -1,7 +1,7 @@
 # world-missile
 
 ### Background/Summary
-* Player saves the world from nuclear destruction by intercepting missiles after they've been fired. Missiles launch from random point in random continent at faster and faster intervals. Player intercepts missiles by using mouse movement and mouse click.
+* Player saves the world by intercepting missiles after they've been fired. Missiles launch from random continents each level in greater numbers and faster intervals. Player intercepts missiles by using mouse movement and mouse click.
  
 ### Technology: 
 * Javascript

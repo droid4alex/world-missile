@@ -26,7 +26,7 @@ img.onload = function () {
 
 img.width = canvas.width;
 img.height = canvas.height;
-img.src = './src/world-map.png';
+img.src = 'https://i.imgur.com/SBpCglW.jpg';
 
 function generateMissile(color){
   let random = Math.floor(Math.random() * 10);

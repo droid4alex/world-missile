@@ -68,7 +68,7 @@ function animate(){
   })
   timeStop = new Date();
   let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
-  if (animateCount > 50 && seconds > 1){
+  if (animateCount > 50 && seconds > 10){
     animateCount = 0;
     missiles.forEach(missile => {
       // missile.increaseSpeed(0.5)

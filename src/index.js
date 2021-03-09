@@ -168,8 +168,7 @@ function checkLoss(){
   let message;
   if (explodedCount === 6) {
     timeStop = new Date();
-    exploded.innerHTML = "Exploded: " + explodedCount + " of " + (numMissiles + levelCount * 2);
-    message = "Game Over! Total score: " + scoreCount + ". 6 missiles found their targets."
+    message = "Game Over!"
     alert(message + countriesDestroyed)
     levelCount = 0;
     scoreCount = 0;
@@ -184,9 +183,14 @@ function countryHit() {
     if(missile.country.inRange(missile.x, missile.y)){
       countriesDestroyed = countriesDestroyed + "\n" + missile.country.countryName + " hit " + missile.country.targetName;
       explodedCount = explodedCount + 1;
-      exploded.innerHTML = "Exploded: " + explodedCount + " of " + (numMissiles + levelCount * 2);
-      scoreCount = scoreCount - 500;
-      score.innerHTML = "Score: " + scoreCount;
+      exploded.innerHTML = "Exploded: " + explodedCount;
+      if (scoreCount - 300 >= 0){
+        scoreCount = scoreCount - 300;
+        score.innerHTML = "Score: " + scoreCount;
+      } else if (scoreCount > 0){
+        scoreCount = 0;
+        score.innerHTML = "Score: " + scoreCount;
+      }
       explosions.push(missile)
     } else{
       missilesRemaining.push(missile)

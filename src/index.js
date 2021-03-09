@@ -172,6 +172,8 @@ function checkLoss(){
     message = "Game Over! Total score: " + scoreCount + ". 6 missiles found their targets."
     alert(message + countriesDestroyed)
     levelCount = 0;
+    scoreCount = 0;
+    score.innerHTML = "Score: " + scoreCount;
     startLevel()
   }
 }

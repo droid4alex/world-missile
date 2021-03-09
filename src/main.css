@@ -30,7 +30,12 @@
   position: relative;
   width: 33%;
 }
-#intercepted-count {
+#disarmed-count {
+  display: block;
+  text-align: center;
+  width: 33%;
+}
+#exploded-count {
   display: block;
   text-align: center;
   width: 33%;

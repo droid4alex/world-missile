@@ -23,9 +23,11 @@ let explosions = [];
 let targets = [];
 let animateCount = 0;
 let countriesDestroyed = "";
+let startGame = false;
 
 canvas.width = window.innerWidth * 0.95;
 canvas.height = window.innerHeight * 0.90;
+
 let img = new Image;
 img.onload = function () {
   c.drawImage(img, 0, 0, canvas.width, canvas.height);
@@ -33,7 +35,16 @@ img.onload = function () {
 
 img.width = canvas.width;
 img.height = canvas.height;
-img.src = 'https://github.com/droid4alex/world-missile/blob/main/src/world-map.jpg?raw=true';
+img.src = 'https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif';
+
+// let gif = new Image;
+// gif.onload = function () {
+//   c.drawImage(gif, 0, 0, canvas.width, canvas.height);
+// }
+
+// gif.width = canvas.width;
+// gif.height = canvas.height;
+// gif.src = 'https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif';
 
 function generateMissile(color){
   let random = Math.floor(Math.random() * 5);
@@ -81,6 +92,12 @@ function animate(){
 }
 
 canvas.addEventListener('click', (e) => {
+  if (!startGame){
+    startGame = true;
+    img.src = 'https://github.com/droid4alex/world-missile/blob/main/src/world-map.jpg?raw=true';
+    startLevel();
+    animate();
+  }
   let missilesRemaining = [];
   let mouseX = e.pageX - canvas.offsetLeft;
   let mouseY = e.pageY - canvas.offsetTop;
@@ -199,5 +216,4 @@ function countryHit() {
   missiles = missilesRemaining;
 }
 
-startLevel();
-animate();
+

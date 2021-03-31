@@ -42,7 +42,7 @@ let countriesDestroyed = "";
 let startGame = false;
 
 canvas.width = window.innerWidth * 0.95;
-canvas.height = window.innerHeight * 0.90;
+canvas.height = window.innerHeight * 0.885;
 
 let img = new Image;
 img.onload = function () {

@@ -11,7 +11,7 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  height: 5vh;
+  height: 4vh;
   font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
   font-size: x-large;
   color: red;
@@ -72,12 +72,6 @@
 
 #footer {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  height: 4vh;
-  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-  font-size: x-large;
   width: 100%;
 }
 
@@ -94,9 +88,29 @@
 }
 
 #github-img {
-  height: 3.5vh;
+  margin-left: 2px;
+  margin-top: 2px;
+  height: 3.8vh;
 }
 
 #linkedin-img {
-  height: 3.5vh;
+  margin-right: 2px;
+  margin-top: 2px;
+  height: 3.8vh;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background:rgba(250, 250, 250, 0.95); 
+}
+ 
+::-webkit-scrollbar-thumb {
+  background: #999; 
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
 }

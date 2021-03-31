@@ -10,7 +10,6 @@ const missileCount = document.getElementById("missile-count");
 const disarmed = document.getElementById("disarmed-count");
 const exploded = document.getElementById("exploded-count");
 const score = document.getElementById("score-count");
-
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
 
@@ -19,17 +18,13 @@ buttonAudio.addEventListener("click", () => {
     buttonAudio.innerHTML = "Music: On";
     documentAudio.volume = 0.5;
     documentAudio.play();
-    buttonAudio.classList.remove('fa-volume-up');
-    buttonAudio.classList.add('fa-volume-mute');
 
   } else {
     buttonAudio.innerHTML = "Music: Off";
+    documentAudio.currentTime = 0;
     documentAudio.pause();
-    buttonAudio.classList.remove('fa-volume-mute');
-    buttonAudio.classList.add('fa-volume-up');
   }
 });
-
 
 const numMissiles = 1;
 let timeStart = new Date()
@@ -109,6 +104,9 @@ canvas.addEventListener('click', (e) => {
     img.src = 'https://github.com/droid4alex/world-missile/blob/main/src/world-map.jpg?raw=true';
     startLevel();
     animate();
+    buttonAudio.innerHTML = "Music: On";
+    documentAudio.volume = 0.5;
+    documentAudio.play();
   }
   let missilesRemaining = [];
   let mouseX = e.pageX - canvas.offsetLeft;
@@ -200,6 +198,7 @@ function checkLoss(){
     timeStop = new Date();
     message = "Game Over!"
     alert(message + countriesDestroyed)
+    documentAudio.currentTime = 0;
     levelCount = 0;
     scoreCount = 0;
     score.innerHTML = "Score: " + scoreCount;

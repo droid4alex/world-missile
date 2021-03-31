@@ -21,27 +21,51 @@
 #canvas {
   display: block;
   box-shadow: 0px 0px 4px 8px #ccc;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
 #level-count {
   display: block;
   text-align: center;
   position: relative;
-  width: 33%;
+  width: 12%;
+}
+#missile-count{
+  display: block;
+  text-align: center;
+  position: relative;
+  width: 20%;
 }
 #disarmed-count {
   display: block;
   text-align: center;
-  width: 33%;
+  width: 20%;
 }
 #exploded-count {
   display: block;
   text-align: center;
-  width: 33%;
+  width: 20%;
 }
 #score-count {
   display: block;
   text-align: center;
-  width: 33%;
+  width: 13%;
+}
+
+#buttonAudio{
+  width: 15%;
+  display: block;
+  text-align: center;
+  opacity: 0.8;
+  font-size: 20px;
+  color: #eee;
+  border: none;
+  border-radius: 2px;
+  outline: none;
+  background:transparent;
+
+  cursor: pointer;
+  transition: all 0.4s ease-out;
+  margin-right: 2px;
+  margin-top: 2px;
 }

@@ -6,11 +6,32 @@ const COLORS = ["Crimson ", "Red", "Orange", "Tomato", "OrangeRed", "Coral"]
 const canvas = document.getElementsByTagName("canvas")[0];
 const c = canvas.getContext('2d');
 const level = document.getElementById("level-count");
+const missileCount = document.getElementById("missile-count");
 const disarmed = document.getElementById("disarmed-count");
 const exploded = document.getElementById("exploded-count");
 const score = document.getElementById("score-count");
 
-const numMissiles = 7;
+const buttonAudio = document.getElementById("buttonAudio");
+const documentAudio = document.querySelector("audio");
+
+buttonAudio.addEventListener("click", () => {
+  if (documentAudio.paused) {
+    buttonAudio.innerHTML = "Music: On";
+    documentAudio.volume = 0.5;
+    documentAudio.play();
+    buttonAudio.classList.remove('fa-volume-up');
+    buttonAudio.classList.add('fa-volume-mute');
+
+  } else {
+    buttonAudio.innerHTML = "Music: Off";
+    documentAudio.pause();
+    buttonAudio.classList.remove('fa-volume-mute');
+    buttonAudio.classList.add('fa-volume-up');
+  }
+});
+
+
+const numMissiles = 1;
 let timeStart = new Date()
 let timeStop = new Date();
 let levelCount = 0;
@@ -96,7 +117,7 @@ canvas.addEventListener('click', (e) => {
     if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50) {
       disarms.push(missile)
       disarmedCount = disarmedCount + 1;
-      disarmed.innerHTML = "Disarmed: " + disarmedCount + " of " + (numMissiles + levelCount*2);
+      disarmed.innerHTML = "Disarmed: " + disarmedCount;
       timeStop = new Date();
       let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
       scoreCount = scoreCount + 100;
@@ -141,6 +162,7 @@ function startLevel(){
   timeStart = new Date();
   levelCount = levelCount + 1;
   level.innerHTML = "Level: " + levelCount;
+  missileCount.innerHTML = "Missiles: " + (numMissiles + levelCount * 3);
   let random = Math.floor(Math.random() * 5);
   let color = COLORS[random];
   for (let i = 0; i < COUNTRIES.length; i++) {
@@ -152,14 +174,14 @@ function startLevel(){
       new Country(COUNTRIES[i].countryName, COUNTRIES[i].y, COUNTRIES[i].y, COUNTRIES[random].countryName, COUNTRIES[random].x, COUNTRIES[random].y, canvas)
       )
   }
-  for (let i = 0; i < (numMissiles + levelCount*2); i++){
+  for (let i = 0; i < (numMissiles + levelCount*3); i++){
     generateMissile(color);    
   }
 }
 
 function checkVictory(){
   let message;
-  if (numMissiles + levelCount*2 === disarmedCount + explodedCount) {
+  if (numMissiles + levelCount*3 === disarmedCount + explodedCount) {
     timeStop = new Date();
     let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
     if (explodedCount > 0){

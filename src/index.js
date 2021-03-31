@@ -35,16 +35,7 @@ img.onload = function () {
 
 img.width = canvas.width;
 img.height = canvas.height;
-img.src = 'https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif';
-
-// let gif = new Image;
-// gif.onload = function () {
-//   c.drawImage(gif, 0, 0, canvas.width, canvas.height);
-// }
-
-// gif.width = canvas.width;
-// gif.height = canvas.height;
-// gif.src = 'https://media.giphy.com/media/3o7bu3XilJ5BOiSGic/giphy.gif';
+img.src = 'https://raw.githubusercontent.com/droid4alex/world-missile/main/src/world-map-intro.jpg';
 
 function generateMissile(color){
   let random = Math.floor(Math.random() * 5);

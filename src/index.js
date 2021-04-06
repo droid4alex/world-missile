@@ -12,6 +12,8 @@ const exploded = document.getElementById("exploded-count");
 const score = document.getElementById("score-count");
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
+let disarmSound;
+disarmSound = new sound("bounce.mp3");
 
 buttonAudio.addEventListener("click", () => {
   if (documentAudio.paused) {

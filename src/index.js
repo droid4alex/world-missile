@@ -12,8 +12,8 @@ const exploded = document.getElementById("exploded-count");
 const score = document.getElementById("score-count");
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
-let disarmSound;
-disarmSound = new sound("bounce.mp3");
+let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
+disarmSound.volume = 0.5;
 
 buttonAudio.addEventListener("click", () => {
   if (documentAudio.paused) {
@@ -81,6 +81,11 @@ function animate(){
     missile.fly()
   })
   disarms.forEach(missile => {
+    if (missile.played === false){
+      disarmSound.currentTime = 0;
+      disarmSound.pause();
+      disarmSound.play();
+    }
     missile.renderDisarm()
   })
   explosions.forEach(explosion => {

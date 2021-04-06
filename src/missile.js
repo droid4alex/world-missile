@@ -14,6 +14,7 @@ export default class Missile {
     this.radius = 5
     this.timer = 100
     this.img = new Image
+    this.played = false
   }
 
 
@@ -84,6 +85,7 @@ export default class Missile {
   }
 
   renderDisarm() {
+    this.played = true;
     if (this.timer > 0) {
       this.timer = this.timer - 3
       this.radius = this.radius + 2

@@ -21,11 +21,7 @@
   font-weight: bold;
   color: #EE3;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  text-shadow: 0px 0px 0 rgb(110, 110, 110),
-                 1px 1px 0 rgb(110, 110, 110),
-                 11px 11px 10px rgba(0,0,0,0.6),
-                 11px 11px 1px rgba(0,0,0,0.5),
-                 0px 0px 10px rgba(0,0,0,0.2);
+  text-shadow: 0px 0px 0 rgb(110, 110, 110), 1px 1px 0 rgb(110, 110, 110);
 }
 
 #canvas {

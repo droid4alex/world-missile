@@ -40,7 +40,6 @@
   text-align: center;
   position: relative;
   margin-left: 0.8vh;
-  color: #EEA;
 }
 #missile-count{
   display: block;
@@ -63,17 +62,8 @@
 }
 
 #buttonAudio{
-  display: block;
-  text-align: center;
-  opacity: 0.8;
-  color: #eee;
-  border: none;
-  border-radius: 2px;
-  outline: none;
-  background: transparent;
-  cursor: pointer;
-  transition: all 0.4s ease-out;
   margin-right: 0.8vh;
+  height: 3.8vh;
 }
 
 #footer {
@@ -104,6 +94,11 @@
 #github-img {
   margin-left: 0.8vh;
   margin-top: 0.8vh;
+  height: 3.8vh;
+}
+
+#github-img-white {
+  margin-left: 0.8vh;
   height: 3.8vh;
 }
 

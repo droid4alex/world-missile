@@ -12,21 +12,12 @@ const exploded = document.getElementById("exploded-count");
 const score = document.getElementById("score-count");
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
-let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
-disarmSound.volume = 0.5;
 
-buttonAudio.addEventListener("click", () => {
-  if (documentAudio.paused) {
-    buttonAudio.innerHTML = "Music: On";
-    documentAudio.volume = 0.5;
-    documentAudio.play();
+// canvas.width = window.innerWidth * 0.93;
+// canvas.height = window.innerHeight * 0.89;
 
-  } else {
-    buttonAudio.innerHTML = "Music: Off";
-    documentAudio.currentTime = 0;
-    documentAudio.pause();
-  }
-});
+canvas.width = window.innerWidth - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
+canvas.height = window.innerHeight - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 
 const numMissiles = 1;
 let timeStart = new Date()
@@ -42,9 +33,8 @@ let targets = [];
 let animateCount = 0;
 let countriesDestroyed = "";
 let startGame = false;
-
-canvas.width = window.innerWidth * 0.93;
-canvas.height = window.innerHeight * 0.89;
+let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
+disarmSound.volume = 0.5;
 
 let img = new Image;
 img.onload = function () {
@@ -54,6 +44,19 @@ img.onload = function () {
 img.width = canvas.width;
 img.height = canvas.height;
 img.src = 'https://raw.githubusercontent.com/droid4alex/world-missile/main/src/world-map-intro.jpg';
+
+buttonAudio.addEventListener("click", () => {
+  if (documentAudio.paused) {
+    buttonAudio.innerHTML = "Music: On";
+    documentAudio.volume = 0.5;
+    documentAudio.play();
+
+  } else {
+    buttonAudio.innerHTML = "Music: Off";
+    documentAudio.currentTime = 0;
+    documentAudio.pause();
+  }
+});
 
 function generateMissile(color){
   let random = Math.floor(Math.random() * 5);
@@ -154,7 +157,7 @@ canvas.addEventListener('mousemove', (e) => {
 
 function startLevel(){
   disarmedCount = 0;
-  disarmed.innerHTML = "Disarmed: " + disarmedCount;
+  disarmed.innerHTML = "Disarmed: &nbsp" + disarmedCount;
   disarmedCount = 0;
   explodedCount = 0;
   exploded.innerHTML = "Exploded: " + explodedCount;

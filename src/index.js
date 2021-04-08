@@ -12,6 +12,7 @@ const exploded = document.getElementById("exploded-count");
 const score = document.getElementById("score-count");
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
+documentAudio.volume = 0.5;
 
 // canvas.width = window.innerWidth * 0.93;
 // canvas.height = window.innerHeight * 0.89;
@@ -19,7 +20,7 @@ const documentAudio = document.querySelector("audio");
 canvas.width = window.innerWidth - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 canvas.height = window.innerHeight - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 
-const numMissiles = 1;
+const numMissiles = 2;
 let timeStart = new Date()
 let timeStop = new Date();
 let levelCount = 0;
@@ -32,91 +33,33 @@ let explosions = [];
 let targets = [];
 let animateCount = 0;
 let countriesDestroyed = "";
-let startGame = false;
+let gameStarted = false;
 let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
 disarmSound.volume = 0.5;
 
-let img = new Image;
-img.onload = function () {
-  c.drawImage(img, 0, 0, canvas.width, canvas.height);
-}
-
+let img = document.getElementById("world-map");
 img.width = canvas.width;
 img.height = canvas.height;
-img.src = 'https://raw.githubusercontent.com/droid4alex/world-missile/main/src/world-map-intro.jpg';
 
-buttonAudio.addEventListener("click", () => {
-  if (documentAudio.paused) {
-    buttonAudio.innerHTML = "Music: On";
-    documentAudio.volume = 0.5;
-    documentAudio.play();
+let imgIntro = document.getElementById("world-map-intro");
+imgIntro.width = canvas.width;
+imgIntro.height = canvas.height;
+imgIntro.onload = function () {
+  c.drawImage(imgIntro, 0, 0, canvas.width, canvas.height);
+  }
+c.drawImage(imgIntro, 0, 0, canvas.width, canvas.height);
 
-  } else {
-    buttonAudio.innerHTML = "Music: Off";
-    documentAudio.currentTime = 0;
-    documentAudio.pause();
-  }
-});
-
-function generateMissile(color){
-  let random = Math.floor(Math.random() * 5);
-  let factor = levelCount * .1;
-  let xSpeed = Math.random() * (2 + factor);
-  let ySpeed = (2 + factor) - xSpeed;
-  if ((Math.random() * 2) >= 1) {
-    xSpeed = xSpeed * -1;
-  }
-  if ((Math.random() * 2) >= 1) {
-    ySpeed = ySpeed * -1;
-  }
-  missiles.push(
-    new Missile(targets[random], COUNTRIES[random].x, COUNTRIES[random].y, 10, 10, color, { x: xSpeed, y: ySpeed}, canvas, c)
-  )
-}
-
-function animate(){
-  animateCount = animateCount+1;
-  requestAnimationFrame(animate);
-  c.clearRect(0, 0, canvas.width, canvas.height);
-  c.drawImage(img, 0, 0, canvas.width, canvas.height);
-  missiles.forEach(missile => {
-    missile.render()
-    missile.fly()
-  })
-  disarms.forEach(missile => {
-    if (missile.played === false){
-      disarmSound.currentTime = 0;
-      disarmSound.pause();
-      disarmSound.play();
-    }
-    missile.renderDisarm()
-  })
-  explosions.forEach(explosion => {
-    explosion.renderExplosion()
-  })
-  timeStop = new Date();
-  let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
-  if (animateCount > 50 && seconds > 10){
-    animateCount = 0;
-    missiles.forEach(missile => {
-      // missile.increaseSpeed(0.5)
-      missile.changeDirection()
-    })
-  }
-  countryHit()
-  checkVictory()
-  checkLoss()
+function startGame() {
+  document.getElementById("canvas").style.cursor = "crosshair";
+  startLevel();
+  animate();
+  documentAudio.play();
 }
 
 canvas.addEventListener('click', (e) => {
-  if (!startGame){
-    startGame = true;
-    img.src = 'https://github.com/droid4alex/world-missile/blob/main/src/world-map.jpg?raw=true';
-    startLevel();
-    animate();
-    buttonAudio.innerHTML = "Music: On";
-    documentAudio.volume = 0.5;
-    documentAudio.play();
+  if (!gameStarted){
+    gameStarted = true;
+    startGame();
   }
   let missilesRemaining = [];
   let mouseX = e.pageX - canvas.offsetLeft;
@@ -155,9 +98,73 @@ canvas.addEventListener('mousemove', (e) => {
   }
 })
 
+buttonAudio.addEventListener("click", () => {
+  if (documentAudio.paused) {
+    documentAudio.volume = 0.5;
+    documentAudio.play();
+
+  } else {
+    documentAudio.currentTime = 0;
+    documentAudio.pause();
+  }
+});
+
+function animate() {
+  animateCount = animateCount + 1;
+  requestAnimationFrame(animate);
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.drawImage(img, 0, 0, canvas.width, canvas.height);
+  missiles.forEach(missile => {
+    missile.render()
+    missile.fly()
+  })
+  disarms.forEach(missile => {
+    if (missile.played === false) {
+      disarmSound.currentTime = 0;
+      disarmSound.pause();
+      disarmSound.play();
+    }
+    missile.renderDisarm()
+  })
+  explosions.forEach(explosion => {
+    explosion.renderExplosion()
+  })
+  timeStop = new Date();
+  let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
+  if (animateCount > 50 && seconds > 10) {
+    animateCount = 0;
+    missiles.forEach(missile => {
+      // missile.increaseSpeed(0.5)
+      missile.changeDirection()
+    })
+  }
+  countryHit()
+  checkVictory()
+  checkLoss()
+}
+
+function generateMissile(color) {
+  let random = Math.floor(Math.random() * 5);
+  let factor = levelCount * .1;
+  let xSpeed = Math.random() * (2 + factor);
+  while (xSpeed > 1.9 || xSpeed < 0.1){
+    xSpeed = Math.random() * (2 + factor);
+  }
+  let ySpeed = (2 + factor) - xSpeed;
+  if ((Math.random() * 2) >= 1) {
+    xSpeed = xSpeed * -1;
+  }
+  if ((Math.random() * 2) >= 1) {
+    ySpeed = ySpeed * -1;
+  }
+  missiles.push(
+    new Missile(targets[random], COUNTRIES[random].x, COUNTRIES[random].y, 10, 10, color, { x: xSpeed, y: ySpeed }, canvas, c)
+  )
+}
+
 function startLevel(){
   disarmedCount = 0;
-  disarmed.innerHTML = "Disarmed: &nbsp" + disarmedCount;
+  disarmed.innerHTML = "Disarmed: " + disarmedCount;
   disarmedCount = 0;
   explodedCount = 0;
   exploded.innerHTML = "Exploded: " + explodedCount;

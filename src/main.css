@@ -29,6 +29,7 @@
   box-shadow: 0 0 0.5vh 0.5vh #ccc;
   margin-top: 0.5vh;
   margin-bottom: 0.5vh;
+  /* cursor: crosshair; */
 }
 
 #level-count {
@@ -60,6 +61,7 @@
 #buttonAudio{
   margin-right: 0.8vh;
   height: 3.8vh;
+  cursor: pointer;
 }
 
 #footer {
@@ -92,10 +94,10 @@
   margin-top: 0.8vh;
   height: 3.8vh;
 }
-
 #github-img-white {
   margin-left: 0.8vh;
   height: 3.8vh;
+  transform: rotate(-90deg);
 }
 
 #linkedin-img {
@@ -118,4 +120,22 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #555; 
+}
+
+#world-map{
+  width: 1px;
+  height: 1px;
+  display: none;
+}
+
+#world-map-intro{
+  width: 1px;
+  height: 1px;
+  display: none;
+}
+
+#missile{
+  width: 1px;
+  height: 1px;
+  display: none;
 }

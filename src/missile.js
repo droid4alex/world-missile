@@ -13,17 +13,31 @@ export default class Missile {
     this.hovered = false
     this.radius = 5
     this.timer = 100
-    this.img = new Image
+    this.img = document.getElementById("missile");
+    this.img.style.transform = "rotate(-90deg)";
+    console.log(this.img.style)
     this.played = false
   }
 
-
   render() {
-    this.c.beginPath()
-    this.c.rect(this.x, this.y, this.width, this.height)
-    // this.c.arc(this.x, this.y, this.width, 7, 7 * Math.PI, false);
-    this.c.fillStyle = this.color
-    this.c.fill()
+   
+    // console.log(this.img.style.transform)
+    // this.c.beginPath()
+    // this.c.rect(this.x, this.y, this.width, this.height)
+    // // this.c.arc(this.x, this.y, this.width, 7, 7 * Math.PI, false);
+    // this.c.fillStyle = this.color
+    // this.c.fill() 
+
+    // this.c.drawImage(this.img, this.x - 10, this.y - 15, 20, 30);
+    // let radians = Math.atan2(this.height, this.width);
+
+    // this.c.translate(this.x, this.y);
+
+    // this.c.rotate(0.5);
+
+    this.c.drawImage(this.img, this.x - 10, this.y - 15, 20, 30);
+    // this.c.rotate(-0.5);
+    // this.c.translate(-this.x, -this.y);
 
     if (this.hovered) {
       this.c.beginPath();

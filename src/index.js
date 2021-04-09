@@ -2,7 +2,10 @@ import Country from './country';
 import Missile from './missile'
 
 const COUNTRIES = [{ countryName: 'Canada', x: 0.13, y: 0.23 }, { countryName: 'United States', x: 0.15, y: 0.38 }, { countryName: 'Brazil', x: 0.30, y: 0.73 }, { countryName: 'Africa', x: 0.56, y: 0.56 }, { countryName: 'Russia', x: 0.80, y: 0.24 }, { countryName: 'China', x: 0.85, y: 0.45 }]
-const COLORS = ["Crimson ", "Red", "Orange", "Tomato", "OrangeRed", "Coral"]
+const TRACKS = ["https://github.com/droid4alex/world-missile/blob/main/src/01_below_the_asteroids.mp3?raw=true",
+               "https://github.com/droid4alex/world-missile/blob/main/src/02_tomorrows_neverending_yesterday.mp3?raw=true",
+                "https://github.com/droid4alex/world-missile/blob/main/src/03_i_saw_your_ship.mp3?raw=true",
+                "https://github.com/droid4alex/world-missile/blob/main/src/04_gallentean_refuge.mp3?raw=true"]
 const canvas = document.getElementsByTagName("canvas")[0];
 const c = canvas.getContext('2d');
 const level = document.getElementById("level-count");
@@ -13,9 +16,6 @@ const score = document.getElementById("score-count");
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
 documentAudio.volume = 0.5;
-
-// canvas.width = window.innerWidth * 0.93;
-// canvas.height = window.innerHeight * 0.89;
 
 canvas.width = window.innerWidth - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 canvas.height = window.innerHeight - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
@@ -34,6 +34,7 @@ let targets = [];
 let animateCount = 0;
 let countriesDestroyed = "";
 let gameStarted = false;
+let musicTrack = 0;
 let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
 disarmSound.volume = 0.5;
 
@@ -66,7 +67,7 @@ canvas.addEventListener('click', (e) => {
   let mouseY = e.pageY - canvas.offsetTop;
   missiles.forEach(missile => {
     if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50) {
-      disarms.push(missile)
+      disarms.push(missile);
       disarmedCount = disarmedCount + 1;
       disarmed.innerHTML = "Disarmed: " + disarmedCount;
       timeStop = new Date();
@@ -78,7 +79,7 @@ canvas.addEventListener('click', (e) => {
       score.innerHTML = "Score: " + scoreCount;
     }
     else {
-      missilesRemaining.push(missile)
+      missilesRemaining.push(missile);
     }
   })
   missiles = missilesRemaining;  
@@ -90,9 +91,9 @@ canvas.addEventListener('mousemove', (e) => {
   if (missiles.length > 0){
     missiles.forEach(missile => {
       if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50){
-        missile.targetOn()
+        missile.targetOn();
       } else{
-        missile.targetOff()
+        missile.targetOff();
       }
     })
   }
@@ -115,19 +116,18 @@ function animate() {
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.drawImage(img, 0, 0, canvas.width, canvas.height);
   missiles.forEach(missile => {
-    missile.render()
-    missile.fly()
+    missile.render();
+    missile.fly();
   })
   disarms.forEach(missile => {
     if (missile.played === false) {
       disarmSound.currentTime = 0;
-      disarmSound.pause();
       disarmSound.play();
     }
-    missile.renderDisarm()
+    missile.renderDisarm();
   })
   explosions.forEach(explosion => {
-    explosion.renderExplosion()
+    explosion.renderExplosion();
   })
   timeStop = new Date();
   let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
@@ -135,12 +135,12 @@ function animate() {
     animateCount = 0;
     missiles.forEach(missile => {
       // missile.increaseSpeed(0.5)
-      missile.changeDirection()
+      missile.changeDirection();
     })
   }
-  countryHit()
-  checkVictory()
-  checkLoss()
+  countryHit();
+  checkVictory();
+  checkLoss();
 }
 
 function generateMissile(color) {
@@ -179,7 +179,7 @@ function startLevel(){
   level.innerHTML = "Level: " + levelCount;
   missileCount.innerHTML = "Missiles: " + (numMissiles + levelCount * 3);
   let random = Math.floor(Math.random() * 5);
-  let color = COLORS[random];
+  let color = "red";
   for (let i = 0; i < COUNTRIES.length; i++) {
     random = Math.floor(Math.random() * 5);
     while (random === i){
@@ -190,7 +190,7 @@ function startLevel(){
       )
   }
   for (let i = 0; i < (numMissiles + levelCount*3); i++){
-    generateMissile(color);    
+    generateMissile("red");    
   }
 }
 
@@ -200,12 +200,12 @@ function checkVictory(){
     timeStop = new Date();
     let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
     if (explodedCount > 0){
-      message = "Level " + levelCount + " complete. " + disarmedCount + " missiles disarmed. \n" + explodedCount + " missiles exploded:"
+      message = "Level " + levelCount + " complete. " + disarmedCount + " missiles disarmed. \n" + explodedCount + " missiles exploded:";
     } else {
-      message = "Perfect! Level " + levelCount + " complete. " + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds."
+      message = "Perfect! Level " + levelCount + " complete. " + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.";
     }
-    alert(message + countriesDestroyed)
-    startLevel()
+    alert(message + countriesDestroyed);
+    startLevel();
   }
 }
 
@@ -213,13 +213,19 @@ function checkLoss(){
   let message;
   if (explodedCount === 6) {
     timeStop = new Date();
-    message = "Game Over!"
-    alert(message + countriesDestroyed)
+    message = "Game Over!";
+    alert(message + countriesDestroyed);    
     documentAudio.currentTime = 0;
+    musicTrack = musicTrack + 1;
+    if (musicTrack > TRACKS.length){
+      musicTrack = 0;
+    }
+    documentAudio.src = TRACKS[musicTrack];
+    documentAudio.play();
     levelCount = 0;
     scoreCount = 0;
     score.innerHTML = "Score: " + scoreCount;
-    startLevel()
+    startLevel();
   }
 }
 
@@ -237,9 +243,9 @@ function countryHit() {
         scoreCount = 0;
         score.innerHTML = "Score: " + scoreCount;
       }
-      explosions.push(missile)
+      explosions.push(missile);
     } else{
-      missilesRemaining.push(missile)
+      missilesRemaining.push(missile);
     }
   })
   missiles = missilesRemaining;

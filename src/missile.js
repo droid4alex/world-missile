@@ -13,40 +13,26 @@ export default class Missile {
     this.hovered = false
     this.radius = 5
     this.timer = 100
-    this.img = document.getElementById("missile");
-    this.img.style.transform = "rotate(-90deg)";
-    console.log(this.img.style)
+    this.img = document.getElementById("missile");    
+    this.radians = 0
+    this.angle = 0
     this.played = false
   }
 
   render() {
-   
-    // console.log(this.img.style.transform)
-    // this.c.beginPath()
-    // this.c.rect(this.x, this.y, this.width, this.height)
-    // // this.c.arc(this.x, this.y, this.width, 7, 7 * Math.PI, false);
-    // this.c.fillStyle = this.color
-    // this.c.fill() 
-
-    // this.c.drawImage(this.img, this.x - 10, this.y - 15, 20, 30);
-    // let radians = Math.atan2(this.height, this.width);
-
-    // this.c.translate(this.x, this.y);
-
-    // this.c.rotate(0.5);
-
+    this.radians = Math.atan2(this.speed.y, this.speed.x);
+    this.angle = 180 * this.radians / Math.PI;
+    this.c.translate(this.x, this.y);
+    this.c.rotate(Math.PI / 180 * (this.angle + 90));
+    this.c.translate(-this.x, -this.y);
     this.c.drawImage(this.img, this.x - 10, this.y - 15, 20, 30);
-    // this.c.rotate(-0.5);
-    // this.c.translate(-this.x, -this.y);
-
+    this.c.setTransform(1, 0, 0, 1, 0, 0);
     if (this.hovered) {
       this.c.beginPath();
       this.c.arc(this.x, this.y, 50, 5, 5 * Math.PI);
       this.c.strokeStyle = "gray";
       this.c.stroke();
     }
-    // this.img.src = 'https://raw.githubusercontent.com/droid4alex/world-missile/main/src/missile.png';
-    // c.drawImage(this.img, this.x, this.y);
   }
 
   increaseSpeed(percent) {

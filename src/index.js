@@ -8,11 +8,6 @@ const TRACKS = ["https://github.com/droid4alex/world-missile/blob/main/src/01_be
                 "https://github.com/droid4alex/world-missile/blob/main/src/04_gallentean_refuge.mp3?raw=true"]
 const canvas = document.getElementsByTagName("canvas")[0];
 const c = canvas.getContext('2d');
-const level = document.getElementById("level-count");
-const missileCount = document.getElementById("missile-count");
-const disarmed = document.getElementById("disarmed-count");
-const exploded = document.getElementById("exploded-count");
-const score = document.getElementById("score-count");
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
 documentAudio.volume = 0.5;
@@ -69,14 +64,14 @@ canvas.addEventListener('click', (e) => {
     if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50) {
       disarms.push(missile);
       disarmedCount = disarmedCount + 1;
-      disarmed.innerHTML = "Disarmed: " + disarmedCount;
+      document.getElementById("disarmed-count").innerHTML = "Disarmed: " + disarmedCount;
       timeStop = new Date();
       let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
       scoreCount = scoreCount + 100;
       if (Math.floor(seconds) < 15) {
         scoreCount = scoreCount + 100;
       }
-      score.innerHTML = "Score: " + scoreCount;
+      document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
     }
     else {
       missilesRemaining.push(missile);
@@ -164,10 +159,10 @@ function generateMissile(color) {
 
 function startLevel(){
   disarmedCount = 0;
-  disarmed.innerHTML = "Disarmed: " + disarmedCount;
+  document.getElementById("disarmed-count").innerHTML = "Disarmed: " + disarmedCount;
   disarmedCount = 0;
   explodedCount = 0;
-  exploded.innerHTML = "Exploded: " + explodedCount;
+  document.getElementById("exploded-count").innerHTML = "Exploded: " + explodedCount;
   missiles = [];
   disarms = [];
   explosions = [];
@@ -176,10 +171,9 @@ function startLevel(){
   countriesDestroyed = "";
   timeStart = new Date();
   levelCount = levelCount + 1;
-  level.innerHTML = "Level: " + levelCount;
-  missileCount.innerHTML = "Missiles: " + (numMissiles + levelCount * 3);
+  document.getElementById("level-text").innerHTML = "Level: " + levelCount;
+  document.getElementById("missile-count").innerHTML = "Missiles: " + (numMissiles + levelCount * 3);
   let random = Math.floor(Math.random() * 5);
-  let color = "red";
   for (let i = 0; i < COUNTRIES.length; i++) {
     random = Math.floor(Math.random() * 5);
     while (random === i){
@@ -188,10 +182,11 @@ function startLevel(){
     targets.push(
       new Country(COUNTRIES[i].countryName, COUNTRIES[i].y, COUNTRIES[i].y, COUNTRIES[random].countryName, COUNTRIES[random].x, COUNTRIES[random].y, canvas)
       )
-  }
-  for (let i = 0; i < (numMissiles + levelCount*3); i++){
-    generateMissile("red");    
-  }
+    }
+  let color = "red";
+    for (let i = 0; i < (numMissiles + levelCount*3); i++){
+      generateMissile(color);
+    }
 }
 
 function checkVictory(){
@@ -224,7 +219,7 @@ function checkLoss(){
     documentAudio.play();
     levelCount = 0;
     scoreCount = 0;
-    score.innerHTML = "Score: " + scoreCount;
+    document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
     startLevel();
   }
 }
@@ -235,13 +230,13 @@ function countryHit() {
     if(missile.country.inRange(missile.x, missile.y)){
       countriesDestroyed = countriesDestroyed + "\n" + missile.country.countryName + " hit " + missile.country.targetName;
       explodedCount = explodedCount + 1;
-      exploded.innerHTML = "Exploded: " + explodedCount;
+      document.getElementById("exploded-count").innerHTML = "Exploded: " + explodedCount;
       if (scoreCount - 300 >= 0){
         scoreCount = scoreCount - 300;
-        score.innerHTML = "Score: " + scoreCount;
+        document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
       } else if (scoreCount > 0){
         scoreCount = 0;
-        score.innerHTML = "Score: " + scoreCount;
+        document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
       }
       explosions.push(missile);
     } else{

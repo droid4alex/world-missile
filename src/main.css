@@ -57,6 +57,21 @@
   display: block;
   text-align: center;
 }
+#level-count-text {
+  font-size: 2.8vh;
+}
+#missile-count-text{
+  font-size: 2.8vh;
+}
+#disarmed-count-text {
+  font-size: 2.8vh;
+}
+#exploded-count-text {
+  font-size: 2.8vh;
+}
+#score-count-text {
+  font-size: 2.8vh;
+}
 
 #buttonAudio{
   margin-right: 0.8vh;

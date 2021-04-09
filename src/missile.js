@@ -2,8 +2,8 @@
 export default class Missile {
   constructor(country, x, y, width, height, color, speed, canvas, c) {
     this.country = country
-    this.x = x * canvas.width
-    this.y = y * canvas.height
+    this.x = x
+    this.y = y
     this.width = width * speed.x
     this.height = height * speed.y
     this.color = color  
@@ -11,6 +11,7 @@ export default class Missile {
     this.canvas = canvas
     this.c = c
     this.hovered = false
+    this.circled = false
     this.radius = 5
     this.timer = 100
     this.img = document.getElementById("missile");    
@@ -33,6 +34,12 @@ export default class Missile {
       this.c.beginPath();
       this.c.arc(this.x, this.y, 60, 5, 5 * Math.PI);
       this.c.strokeStyle = "gray";
+      this.c.stroke();
+    }
+    if (this.circled) {
+      this.c.beginPath();
+      this.c.arc(this.x, this.y, 20, 20, 20 * Math.PI);
+      this.c.strokeStyle = "red";
       this.c.stroke();
     }
   }
@@ -91,6 +98,15 @@ export default class Missile {
   targetOff() {
     this.hovered = false;
   }
+
+  circleOn() {
+    this.circled = true;
+  }
+
+  circleOff() {
+    this.circled = false;
+  }
+
 
   renderExplosion() {
     this.exploded = true;

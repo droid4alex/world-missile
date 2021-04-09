@@ -1,7 +1,7 @@
 import Country from './country';
 import Missile from './missile'
 
-const COUNTRIES = [{ countryName: 'Canada', x: 0.13, y: 0.23 }, { countryName: 'United States', x: 0.15, y: 0.38 }, { countryName: 'Brazil', x: 0.30, y: 0.73 }, { countryName: 'Africa', x: 0.56, y: 0.56 }, { countryName: 'Russia', x: 0.80, y: 0.24 }, { countryName: 'China', x: 0.85, y: 0.45 }]
+const COUNTRIES = [{ countryName: 'Canada', x: 0.13, y: 0.23, quandrant: 2 }, { countryName: 'United States', x: 0.15, y: 0.38, quandrant: 2 }, { countryName: 'Brazil', x: 0.30, y: 0.73, quandrant: 3 }, { countryName: 'Africa', x: 0.56, y: 0.56, quandrant: 4 }, { countryName: 'Russia', x: 0.80, y: 0.24, quandrant: 1 }, { countryName: 'China', x: 0.85, y: 0.45, quandrant: 1 }]
 const TRACKS = ["https://github.com/droid4alex/world-missile/blob/main/src/01_below_the_asteroids.mp3?raw=true",
                "https://github.com/droid4alex/world-missile/blob/main/src/02_tomorrows_neverending_yesterday.mp3?raw=true",
                 "https://github.com/droid4alex/world-missile/blob/main/src/03_i_saw_your_ship.mp3?raw=true",
@@ -12,12 +12,14 @@ const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
 documentAudio.volume = 0.5;
 
+window.onresize = function () { location.reload(); }
 canvas.width = window.innerWidth - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 canvas.height = window.innerHeight - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 
-const numMissiles = 2;
+const numMissiles = 7;
 let timeStart = new Date()
 let timeStop = new Date();
+let seconds = 0;
 let levelCount = 0;
 let disarmedCount = 0;
 let explodedCount = 0;
@@ -30,6 +32,8 @@ let animateCount = 0;
 let countriesDestroyed = "";
 let gameStarted = false;
 let musicTrack = 0;
+let framesCount = 0;
+let avgFps = [];
 
 let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
 disarmSound.volume = 0.5;
@@ -69,8 +73,6 @@ canvas.addEventListener('click', (e) => {
       disarms.push(missile);
       disarmedCount = disarmedCount + 1;
       document.getElementById("disarmed-count").innerHTML = disarmedCount;
-      timeStop = new Date();
-      let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
       scoreCount = scoreCount + 100;
       if (Math.floor(seconds) < 15) {
         scoreCount = scoreCount + 100;
@@ -89,8 +91,8 @@ canvas.addEventListener('mousemove', (e) => {
   let mouseY = e.pageY - canvas.offsetTop;
   if (missiles.length > 0){
     missiles.forEach(missile => {
-      if (Math.abs(mouseX - missile.x) <= 100 && Math.abs(mouseY - missile.y) <= 100) {
-        if (missile.animateCount > 600) {
+      if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50) {
+        if (missile.animateCount > 6000) {
           missile.animateCount = 0;
           missile.changeDirection();
         }
@@ -101,13 +103,16 @@ canvas.addEventListener('mousemove', (e) => {
         missile.targetOff();
       }
     })
-
-
   }
 })
 
 buttonAudio.addEventListener("click", () => {
   if (documentAudio.paused) {
+    musicTrack = musicTrack + 1;
+    if (musicTrack >= TRACKS.length) {
+      musicTrack = 0;
+    }
+    documentAudio.src = TRACKS[musicTrack];
     documentAudio.volume = 0.5;
     documentAudio.play();
 
@@ -118,10 +123,11 @@ buttonAudio.addEventListener("click", () => {
 });
 
 function animate() {
-  animateCount = animateCount + 1;
   requestAnimationFrame(animate);
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.drawImage(img, 0, 0, canvas.width, canvas.height);
+  timeStop = new Date();
+  seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
   missiles.forEach(missile => {
     missile.animateCount = missile.animateCount + 1
     missile.render();
@@ -141,18 +147,16 @@ function animate() {
     }
     missile.renderExplosion();
   })
-  timeStop = new Date();
-  let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
   if (animateCount > 100 && seconds > 5) {
     animateCount = 0;
     missiles.forEach(missile => {
-      missile.increaseSpeed(levelCount * .01)
+      missile.increaseSpeed(levelCount * .011)
     })
-  }
-  
+  }  
   countryHit();
   checkVictory();
   checkLoss();
+  showFps();
 }
 
 function generateMissile(color) {
@@ -173,7 +177,7 @@ function generateMissile(color) {
   }
   let random = Math.floor(Math.random() * 5);
   missiles.push(
-    new Missile(targets[random], COUNTRIES[random].x, COUNTRIES[random].y, 10, 10, color, { x: xSpeed, y: ySpeed }, canvas, c)
+    new Missile(targets[random], targets[random].x, targets[random].y, 10, 10, color, { x: xSpeed, y: ySpeed }, canvas, c)
   )
 }
 
@@ -188,6 +192,8 @@ function startLevel(){
   explosions = [];
   targets = [];
   animateCount = 0;
+  framesCount = 0;
+  avgFps = [];
   countriesDestroyed = "";
   timeStart = new Date();
   levelCount = levelCount + 1;
@@ -199,8 +205,28 @@ function startLevel(){
     while (random === i){
       random = Math.floor(Math.random() * 5);
     } 
+    let startX = 0;
+    let startY = 0;
+    switch (COUNTRIES[random].quandrant) {
+      case 1:
+        startX = 0 + (Math.random() * canvas.width * .33);
+        startY = canvas.height - (Math.random() * canvas.height * .33);
+        break;
+      case 2:
+        startX = canvas.width - (Math.random() * canvas.width * .33);
+        startY = canvas.height - (Math.random() * canvas.height * .33);
+        break;
+      case 3:
+        startX = canvas.width - (Math.random() * canvas.width * .33);
+        startY = 0 + (Math.random() * canvas.height * .33);
+        break;
+      case 4:
+        startX = 0 + (Math.random() * canvas.width * .33);
+        startY = 0 + (Math.random() * canvas.height * .33);
+        break;
+    }
     targets.push(
-      new Country(COUNTRIES[i].countryName, COUNTRIES[i].y, COUNTRIES[i].y, COUNTRIES[random].countryName, COUNTRIES[random].x, COUNTRIES[random].y, canvas)
+      new Country(COUNTRIES[i].countryName, startX, startY, COUNTRIES[random].countryName, COUNTRIES[random].x, COUNTRIES[random].y, canvas)
       )
     }
   let color = "red";
@@ -212,12 +238,10 @@ function startLevel(){
 function checkVictory(){
   let message;
   if (numMissiles + levelCount*3 === disarmedCount + explodedCount) {
-    timeStop = new Date();
-    let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
     if (explodedCount > 0){
-      message = "Level " + levelCount + " complete. " + disarmedCount + " missiles disarmed. \n" + explodedCount + " missiles exploded:";
+      message = "Level " + levelCount + " complete.\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n" + explodedCount + " missiles exploded.\n";
     } else {
-      message = "Perfect! Level " + levelCount + " complete. " + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.";
+      message = "Perfect! Level " + levelCount + " complete.\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n";
     }
     alert(message + countriesDestroyed);
     startLevel();
@@ -226,13 +250,12 @@ function checkVictory(){
 
 function checkLoss(){
   let message;
-  if (explodedCount === 6) {
-    timeStop = new Date();
-    message = "Game Over!";
+  if (explodedCount === 10) {
+    message = "Game Over! " + explodedCount + " missiles exploded.\n";
     alert(message + countriesDestroyed);    
     documentAudio.currentTime = 0;
     musicTrack = musicTrack + 1;
-    if (musicTrack > TRACKS.length){
+    if (musicTrack >= TRACKS.length){
       musicTrack = 0;
     }
     documentAudio.src = TRACKS[musicTrack];
@@ -261,9 +284,24 @@ function countryHit() {
       explosions.push(missile);
     } else{
       missilesRemaining.push(missile);
+      if (missile.country.inCircleRange(missile.x, missile.y)){
+        missile.circleOn();
+      } else {
+        missile.circleOff();
+      }
     }
   })
   missiles = missilesRemaining;
 }
 
-
+function showFps(){
+  framesCount = framesCount + 1;
+  if (avgFps.length < seconds - 1){
+    avgFps.push(framesCount)
+    framesCount = 0
+  }
+  if (seconds > 1){
+    document.getElementById("fps").innerHTML = "Frames Per Second: " + avgFps[avgFps.length - 1];
+    document.getElementById("fps-avg").innerHTML = " Average: " + avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
+  }
+}

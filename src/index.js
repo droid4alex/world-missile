@@ -89,12 +89,20 @@ canvas.addEventListener('mousemove', (e) => {
   let mouseY = e.pageY - canvas.offsetTop;
   if (missiles.length > 0){
     missiles.forEach(missile => {
+      if (Math.abs(mouseX - missile.x) <= 100 && Math.abs(mouseY - missile.y) <= 100) {
+        if (missile.animateCount > 600) {
+          missile.animateCount = 0;
+          missile.changeDirection();
+        }
+      }
       if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50){
         missile.targetOn();
       } else{
         missile.targetOff();
       }
     })
+
+
   }
 })
 
@@ -115,6 +123,7 @@ function animate() {
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.drawImage(img, 0, 0, canvas.width, canvas.height);
   missiles.forEach(missile => {
+    missile.animateCount = missile.animateCount + 1
     missile.render();
     missile.fly();
   })
@@ -134,32 +143,35 @@ function animate() {
   })
   timeStop = new Date();
   let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
-  if (animateCount > 50 && seconds > 10) {
+  if (animateCount > 100 && seconds > 5) {
     animateCount = 0;
     missiles.forEach(missile => {
-      // missile.increaseSpeed(0.5)
-      missile.changeDirection();
+      missile.increaseSpeed(levelCount * .01)
     })
   }
+  
   countryHit();
   checkVictory();
   checkLoss();
 }
 
 function generateMissile(color) {
-  let random = Math.floor(Math.random() * 5);
-  let factor = levelCount * .01;
-  let xSpeed = Math.random() * (2 + factor);
-  while (xSpeed > 1.9 || xSpeed < 0.1){
-    xSpeed = Math.random() * (2 + factor);
+  let factor = levelCount * .5;
+  let xSpeed = Math.random() * (1 + factor);
+  while (xSpeed > 0.9 || xSpeed < 0.1){
+    xSpeed = Math.random() * (1 + factor);
   }
-  let ySpeed = (2 + factor) - xSpeed;
+  let ySpeed = (1 + factor) - xSpeed;
+  while (ySpeed > 0.9 || ySpeed < 0.1) {
+    ySpeed = Math.random() * (1 + factor);
+  }
   if ((Math.random() * 2) >= 1) {
     xSpeed = xSpeed * -1;
   }
   if ((Math.random() * 2) >= 1) {
     ySpeed = ySpeed * -1;
   }
+  let random = Math.floor(Math.random() * 5);
   missiles.push(
     new Missile(targets[random], COUNTRIES[random].x, COUNTRIES[random].y, 10, 10, color, { x: xSpeed, y: ySpeed }, canvas, c)
   )

@@ -18,6 +18,7 @@ export default class Missile {
     this.angle = 0
     this.disarmed = false
     this.exploded = false
+    this.animateCount = 0
   }
 
   render() {
@@ -37,16 +38,33 @@ export default class Missile {
   }
 
   increaseSpeed(percent) {
-    if (this.speed.x > this.speed.y){
-      this.speed.x = this.speed.x + (this.speed.x * percent)
-    } else {
-      this.speed.y = this.speed.y + (this.speed.y * percent)
-    }
+    // if (this.speed.x > this.speed.y){
+    //   this.speed.x = this.speed.x + (this.speed.x * percent)
+    // } else {
+    //   this.speed.y = this.speed.y + (this.speed.y * percent)
+    // }
+    this.speed.x = this.speed.x + (this.speed.x * percent)
+    this.speed.y = this.speed.y + (this.speed.y * percent)
   }
 
   changeDirection(){
-    this.speed.x = this.speed.x + (Math.random() * 0.1)
-    this.speed.y = this.speed.y + (Math.random() * 0.1)
+    let max = Math.abs(this.speed.x) + Math.abs(this.speed.y)
+    let xSpeed = Math.random() * (max);
+    while (xSpeed > 0.9 || xSpeed < 0.1) {
+      xSpeed = Math.random() * (max);
+    }
+    let ySpeed = (max) - xSpeed;
+    while (ySpeed > 0.9 || ySpeed < 0.1) {
+      ySpeed = Math.random() * (max);
+    }
+    if ((Math.random() * 2) >= 1) {
+      xSpeed = xSpeed * -1;
+    }
+    if ((Math.random() * 2) >= 1) {
+      ySpeed = ySpeed * -1;
+    }
+    this.speed.x = xSpeed;
+    this.speed.y = ySpeed;
   }
 
   fly(){

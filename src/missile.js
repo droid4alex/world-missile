@@ -29,7 +29,7 @@ export default class Missile {
     this.c.setTransform(1, 0, 0, 1, 0, 0);
     if (this.hovered) {
       this.c.beginPath();
-      this.c.arc(this.x, this.y, 50, 5, 5 * Math.PI);
+      this.c.arc(this.x, this.y, 60, 5, 5 * Math.PI);
       this.c.strokeStyle = "gray";
       this.c.stroke();
     }

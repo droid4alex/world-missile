@@ -30,8 +30,12 @@ let animateCount = 0;
 let countriesDestroyed = "";
 let gameStarted = false;
 let musicTrack = 0;
+
 let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
 disarmSound.volume = 0.5;
+
+let explodedSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/explosion.mp3");
+explodedSound.volume = 0.5;
 
 let img = document.getElementById("world-map");
 img.width = canvas.width;
@@ -61,7 +65,7 @@ canvas.addEventListener('click', (e) => {
   let mouseX = e.pageX - canvas.offsetLeft;
   let mouseY = e.pageY - canvas.offsetTop;
   missiles.forEach(missile => {
-    if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50) {
+    if (Math.abs(mouseX - missile.x) <= 60 && Math.abs(mouseY - missile.y) <= 60) {
       disarms.push(missile);
       disarmedCount = disarmedCount + 1;
       document.getElementById("disarmed-count").innerHTML = disarmedCount;
@@ -122,6 +126,8 @@ function animate() {
     missile.renderDisarm();
   })
   explosions.forEach(explosion => {
+    explodedSound.currentTime = 0;
+    explodedSound.play();
     explosion.renderExplosion();
   })
   timeStop = new Date();
@@ -140,7 +146,7 @@ function animate() {
 
 function generateMissile(color) {
   let random = Math.floor(Math.random() * 5);
-  let factor = levelCount * .1;
+  let factor = levelCount * .01;
   let xSpeed = Math.random() * (2 + factor);
   while (xSpeed > 1.9 || xSpeed < 0.1){
     xSpeed = Math.random() * (2 + factor);

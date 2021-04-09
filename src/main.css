@@ -17,9 +17,9 @@
   margin-bottom: 0.5vh;
   text-transform: uppercase;
   font-family: verdana;
-  font-size: 2.2vh;
+  font-size: 3vh;
   font-weight: bold;
-  color: #EE3;
+  color: rgb(255, 255, 4);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   text-shadow: 0px 0px 0 rgb(110, 110, 110), 1px 1px 0 rgb(110, 110, 110);
 }
@@ -32,45 +32,57 @@
   /* cursor: crosshair; */
 }
 
+#level-count-img{
+  width: 14vh;
+  margin-right: 2vh;
+}
 #level-count {
   display: block;
   text-align: center;
   position: relative;
-  margin-left: 0.8vh;
+}
+
+#missile-count-img{
+  width: 15vh;
+  height: 3vh;
+  margin-right: 2vh;
 }
 #missile-count{
   display: block;
   text-align: center;
   position: relative;
-  color: red;
+  color: rgb(200, 45, 39);
+}
+
+#exploded-count-img{
+  width: 17vh;
+  height: 3vh;
+  margin-right: 2vh;
+}
+#exploded-count {
+  display: block;
+  text-align: center;
+  color: rgb(200,45, 39);
+}
+
+#disarmed-count-img{
+  width: 19vh;
+  height: 2.8vh;
+  margin-right: 2vh;
 }
 #disarmed-count {
   display: block;
   text-align: center;
 }
-#exploded-count {
-  display: block;
-  text-align: center;
-  color: red;
+
+#score-count-img{
+  width: 12vh;
+  height: 2.8vh;
+  margin-right: 2vh;
 }
 #score-count {
   display: block;
   text-align: center;
-}
-#level-count-text {
-  font-size: 2.8vh;
-}
-#missile-count-text{
-  font-size: 2.8vh;
-}
-#disarmed-count-text {
-  font-size: 2.8vh;
-}
-#exploded-count-text {
-  font-size: 2.8vh;
-}
-#score-count-text {
-  font-size: 2.8vh;
 }
 
 #buttonAudio{

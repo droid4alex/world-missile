@@ -64,14 +64,14 @@ canvas.addEventListener('click', (e) => {
     if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50) {
       disarms.push(missile);
       disarmedCount = disarmedCount + 1;
-      document.getElementById("disarmed-count").innerHTML = "Disarmed: " + disarmedCount;
+      document.getElementById("disarmed-count").innerHTML = disarmedCount;
       timeStop = new Date();
       let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
       scoreCount = scoreCount + 100;
       if (Math.floor(seconds) < 15) {
         scoreCount = scoreCount + 100;
       }
-      document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
+      document.getElementById("score-count").innerHTML = scoreCount;
     }
     else {
       missilesRemaining.push(missile);
@@ -159,10 +159,10 @@ function generateMissile(color) {
 
 function startLevel(){
   disarmedCount = 0;
-  document.getElementById("disarmed-count").innerHTML = "Disarmed: " + disarmedCount;
+  document.getElementById("disarmed-count").innerHTML = disarmedCount;
   disarmedCount = 0;
   explodedCount = 0;
-  document.getElementById("exploded-count").innerHTML = "Exploded: " + explodedCount;
+  document.getElementById("exploded-count").innerHTML = explodedCount;
   missiles = [];
   disarms = [];
   explosions = [];
@@ -171,8 +171,8 @@ function startLevel(){
   countriesDestroyed = "";
   timeStart = new Date();
   levelCount = levelCount + 1;
-  document.getElementById("level-text").innerHTML = "Level: " + levelCount;
-  document.getElementById("missile-count").innerHTML = "Missiles: " + (numMissiles + levelCount * 3);
+  document.getElementById("level-count").innerHTML = levelCount;
+  document.getElementById("missile-count").innerHTML = (numMissiles + levelCount * 3);
   let random = Math.floor(Math.random() * 5);
   for (let i = 0; i < COUNTRIES.length; i++) {
     random = Math.floor(Math.random() * 5);
@@ -219,7 +219,7 @@ function checkLoss(){
     documentAudio.play();
     levelCount = 0;
     scoreCount = 0;
-    document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
+    document.getElementById("score-count").innerHTML = scoreCount;
     startLevel();
   }
 }
@@ -230,13 +230,13 @@ function countryHit() {
     if(missile.country.inRange(missile.x, missile.y)){
       countriesDestroyed = countriesDestroyed + "\n" + missile.country.countryName + " hit " + missile.country.targetName;
       explodedCount = explodedCount + 1;
-      document.getElementById("exploded-count").innerHTML = "Exploded: " + explodedCount;
+      document.getElementById("exploded-count").innerHTML = explodedCount;
       if (scoreCount - 300 >= 0){
         scoreCount = scoreCount - 300;
-        document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
+        document.getElementById("score-count").innerHTML = scoreCount;
       } else if (scoreCount > 0){
         scoreCount = 0;
-        document.getElementById("score-count").innerHTML = "Score: " + scoreCount;
+        document.getElementById("score-count").innerHTML = scoreCount;
       }
       explosions.push(missile);
     } else{

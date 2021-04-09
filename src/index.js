@@ -119,16 +119,18 @@ function animate() {
     missile.fly();
   })
   disarms.forEach(missile => {
-    if (missile.played === false) {
+    if (missile.disarmed === false) {
       disarmSound.currentTime = 0;
       disarmSound.play();
     }
     missile.renderDisarm();
   })
-  explosions.forEach(explosion => {
-    explodedSound.currentTime = 0;
-    explodedSound.play();
-    explosion.renderExplosion();
+  explosions.forEach(missile => {
+    if (missile.exploded === false) {
+      explodedSound.currentTime = 0;
+      explodedSound.play();
+    }
+    missile.renderExplosion();
   })
   timeStop = new Date();
   let seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);

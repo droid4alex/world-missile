@@ -16,7 +16,8 @@ export default class Missile {
     this.img = document.getElementById("missile");    
     this.radians = 0
     this.angle = 0
-    this.played = false
+    this.disarmed = false
+    this.exploded = false
   }
 
   render() {
@@ -74,6 +75,7 @@ export default class Missile {
   }
 
   renderExplosion() {
+    this.exploded = true;
     if (this.timer > 0) {
       this.timer = this.timer - 1
       this.radius = this.radius + 1
@@ -85,7 +87,7 @@ export default class Missile {
   }
 
   renderDisarm() {
-    this.played = true;
+    this.disarmed = true;
     if (this.timer > 0) {
       this.timer = this.timer - 3
       this.radius = this.radius + 2

@@ -43,8 +43,8 @@
 }
 
 #missile-count-img{
-  width: 15vh;
-  height: 3vh;
+  width: 18vh;
+  height: 3.3vh;
   margin-right: 2vh;
 }
 #missile-count{
@@ -55,8 +55,8 @@
 }
 
 #exploded-count-img{
-  width: 17vh;
-  height: 3vh;
+  width: 18vh;
+  height: 3.1vh;
   margin-right: 2vh;
 }
 #exploded-count {
@@ -102,7 +102,7 @@
 #github {
   display: block;
   text-align: left;
-  width: 50%;
+  width: 10%;
 }
 
 #github-white {
@@ -110,10 +110,30 @@
   text-align: left;
 }
 
+#fps {
+  margin-top: 0.8vh;
+  font: black;
+  font-size: 2.3vh;
+  text-align: right;
+  width: 40%;
+  margin-right: 1vh;
+  margin-top: 1.5vh;
+}
+
+#fps-avg {
+  margin-top: 0.8vh;
+  font: black;
+  font-size: 2.3vh;
+  text-align: left;
+  width: 40%;
+  margin-left: 1vh;
+  margin-top: 1.5vh;
+}
+
 #linkedin {
   display: block;
   text-align: right;
-  width: 50%;
+  width: 10%;
 }
 
 #github-img {

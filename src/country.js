@@ -1,8 +1,8 @@
 export default class Country {
   constructor(countryName, x, y, targetName, targetX, targetY, canvas){
     this.countryName = countryName
-    this.x = x * canvas.width
-    this.y = y * canvas.height
+    this.x = x
+    this.y = y
     this.targetName = targetName
     this.targetX = targetX * canvas.width
     this.targetY = targetY * canvas.height
@@ -16,6 +16,14 @@ export default class Country {
       return true
     }else
     {
+      return false
+    }
+  }
+
+  inCircleRange(x, y) {
+    if (Math.abs(x - this.targetX) <= 150 && Math.abs(y - this.targetY) <= 150) {
+      return true
+    } else {
       return false
     }
   }

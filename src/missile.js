@@ -2,8 +2,8 @@
 export default class Missile {
   constructor(country, x, y, width, height, color, speed, canvas, c) {
     this.country = country
-    this.x = x * canvas.width
-    this.y = y * canvas.height
+    this.x = x
+    this.y = y
     this.width = width * speed.x
     this.height = height * speed.y
     this.color = color  
@@ -11,12 +11,15 @@ export default class Missile {
     this.canvas = canvas
     this.c = c
     this.hovered = false
+    this.circled = false
     this.radius = 5
     this.timer = 100
     this.img = document.getElementById("missile");    
     this.radians = 0
     this.angle = 0
-    this.played = false
+    this.disarmed = false
+    this.exploded = false
+    this.animateCount = 0
   }
 
   render() {
@@ -29,23 +32,46 @@ export default class Missile {
     this.c.setTransform(1, 0, 0, 1, 0, 0);
     if (this.hovered) {
       this.c.beginPath();
-      this.c.arc(this.x, this.y, 50, 5, 5 * Math.PI);
+      this.c.arc(this.x, this.y, 60, 5, 5 * Math.PI);
       this.c.strokeStyle = "gray";
+      this.c.stroke();
+    }
+    if (this.circled) {
+      this.c.beginPath();
+      this.c.arc(this.x, this.y, 20, 20, 20 * Math.PI);
+      this.c.strokeStyle = "red";
       this.c.stroke();
     }
   }
 
   increaseSpeed(percent) {
-    if (this.speed.x > this.speed.y){
-      this.speed.x = this.speed.x + (this.speed.x * percent)
-    } else {
-      this.speed.y = this.speed.y + (this.speed.y * percent)
-    }
+    // if (this.speed.x > this.speed.y){
+    //   this.speed.x = this.speed.x + (this.speed.x * percent)
+    // } else {
+    //   this.speed.y = this.speed.y + (this.speed.y * percent)
+    // }
+    this.speed.x = this.speed.x + (this.speed.x * percent)
+    this.speed.y = this.speed.y + (this.speed.y * percent)
   }
 
   changeDirection(){
-    this.speed.x = this.speed.x + (Math.random() * 0.1)
-    this.speed.y = this.speed.y + (Math.random() * 0.1)
+    let max = Math.abs(this.speed.x) + Math.abs(this.speed.y)
+    let xSpeed = Math.random() * (max);
+    while (xSpeed > 0.9 || xSpeed < 0.1) {
+      xSpeed = Math.random() * (max);
+    }
+    let ySpeed = (max) - xSpeed;
+    while (ySpeed > 0.9 || ySpeed < 0.1) {
+      ySpeed = Math.random() * (max);
+    }
+    if ((Math.random() * 2) >= 1) {
+      xSpeed = xSpeed * -1;
+    }
+    if ((Math.random() * 2) >= 1) {
+      ySpeed = ySpeed * -1;
+    }
+    this.speed.x = xSpeed;
+    this.speed.y = ySpeed;
   }
 
   fly(){
@@ -73,7 +99,17 @@ export default class Missile {
     this.hovered = false;
   }
 
+  circleOn() {
+    this.circled = true;
+  }
+
+  circleOff() {
+    this.circled = false;
+  }
+
+
   renderExplosion() {
+    this.exploded = true;
     if (this.timer > 0) {
       this.timer = this.timer - 1
       this.radius = this.radius + 1
@@ -85,7 +121,7 @@ export default class Missile {
   }
 
   renderDisarm() {
-    this.played = true;
+    this.disarmed = true;
     if (this.timer > 0) {
       this.timer = this.timer - 3
       this.radius = this.radius + 2

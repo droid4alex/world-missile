@@ -16,6 +16,29 @@ window.onresize = function () { location.reload(); }
 canvas.width = window.innerWidth - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 canvas.height = window.innerHeight - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
 
+let targetSize = canvas.width * 0.07;
+if (targetSize < canvas.height * 0.09){
+  targetSize = canvas.height * 0.09;
+}
+if (targetSize > 70){
+  targetSize = 70;
+}
+
+let missileWidth = canvas.width * 0.03;
+if (missileWidth < 15){
+  missileWidth = 15;
+}
+if (missileWidth > 30) {
+  missileWidth = 30;
+}
+let missileHeight = canvas.height * 0.1;
+if (missileHeight < 30){
+  missileHeight = 30
+}
+if (missileHeight > 60) {
+  missileHeight = 60
+}
+
 const numMissiles = 7;
 let timeStart = new Date()
 let timeStop = new Date();
@@ -34,6 +57,7 @@ let gameStarted = false;
 let musicTrack = 0;
 let framesCount = 0;
 let avgFps = [];
+let basespeed = 1;
 
 let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
 disarmSound.volume = 0.5;
@@ -69,7 +93,7 @@ canvas.addEventListener('click', (e) => {
   let mouseX = e.pageX - canvas.offsetLeft;
   let mouseY = e.pageY - canvas.offsetTop;
   missiles.forEach(missile => {
-    if (Math.abs(mouseX - missile.x) <= 60 && Math.abs(mouseY - missile.y) <= 60) {
+    if (Math.abs(mouseX - missile.x) <= targetSize && Math.abs(mouseY - missile.y) <= targetSize) {
       disarms.push(missile);
       disarmedCount = disarmedCount + 1;
       document.getElementById("disarmed-count").innerHTML = disarmedCount;
@@ -91,13 +115,13 @@ canvas.addEventListener('mousemove', (e) => {
   let mouseY = e.pageY - canvas.offsetTop;
   if (missiles.length > 0){
     missiles.forEach(missile => {
-      if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50) {
+      if (Math.abs(mouseX - missile.x) <= targetSize && Math.abs(mouseY - missile.y) <= targetSize) {
         if (missile.animateCount > 6000) {
           missile.animateCount = 0;
           missile.changeDirection();
         }
       }
-      if (Math.abs(mouseX - missile.x) <= 50 && Math.abs(mouseY - missile.y) <= 50){
+      if (Math.abs(mouseX - missile.x) <= targetSize && Math.abs(mouseY - missile.y) <= targetSize){
         missile.targetOn();
       } else{
         missile.targetOff();
@@ -124,6 +148,7 @@ buttonAudio.addEventListener("click", () => {
 
 function animate() {
   requestAnimationFrame(animate);
+  animateCount = animateCount + 1;
   c.clearRect(0, 0, canvas.width, canvas.height);
   c.drawImage(img, 0, 0, canvas.width, canvas.height);
   timeStop = new Date();
@@ -147,10 +172,10 @@ function animate() {
     }
     missile.renderExplosion();
   })
-  if (animateCount > 100 && seconds > 5) {
+  if (animateCount > 50 && seconds > 5) {
     animateCount = 0;
     missiles.forEach(missile => {
-      missile.increaseSpeed(levelCount * .011)
+      missile.increaseSpeed(.01)
     })
   }  
   countryHit();
@@ -159,16 +184,13 @@ function animate() {
   showFps();
 }
 
-function generateMissile(color) {
-  let factor = levelCount * .5;
-  let xSpeed = Math.random() * (1 + factor);
-  while (xSpeed > 0.9 || xSpeed < 0.1){
+function generateMissile() {
+  let factor = levelCount * basespeed * .05;
+  let xSpeed = Math.random() * (basespeed + factor);
+  while (xSpeed > basespeed * 0.9 || xSpeed < basespeed*0.1){
     xSpeed = Math.random() * (1 + factor);
   }
-  let ySpeed = (1 + factor) - xSpeed;
-  while (ySpeed > 0.9 || ySpeed < 0.1) {
-    ySpeed = Math.random() * (1 + factor);
-  }
+  let ySpeed = (basespeed + factor) - xSpeed;
   if ((Math.random() * 2) >= 1) {
     xSpeed = xSpeed * -1;
   }
@@ -177,7 +199,7 @@ function generateMissile(color) {
   }
   let random = Math.floor(Math.random() * 5);
   missiles.push(
-    new Missile(targets[random], targets[random].x, targets[random].y, 10, 10, color, { x: xSpeed, y: ySpeed }, canvas, c)
+    new Missile(targets[random], targets[random].x, targets[random].y, missileWidth, missileHeight, targetSize, { x: xSpeed, y: ySpeed }, canvas, c)
   )
 }
 
@@ -226,12 +248,11 @@ function startLevel(){
         break;
     }
     targets.push(
-      new Country(COUNTRIES[i].countryName, startX, startY, COUNTRIES[random].countryName, COUNTRIES[random].x, COUNTRIES[random].y, canvas)
+      new Country(COUNTRIES[i].countryName, startX, startY, COUNTRIES[random].countryName, COUNTRIES[random].x, COUNTRIES[random].y, targetSize, canvas)
       )
     }
-  let color = "red";
     for (let i = 0; i < (numMissiles + levelCount*3); i++){
-      generateMissile(color);
+      generateMissile();
     }
 }
 
@@ -303,5 +324,8 @@ function showFps(){
   if (seconds > 1){
     document.getElementById("fps").innerHTML = "Frames Per Second: " + avgFps[avgFps.length - 1];
     document.getElementById("fps-avg").innerHTML = " Average: " + avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
+  }
+  if (seconds > 2 && basespeed === 1) {
+    basespeed = basespeed + 25 / avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
   }
 }

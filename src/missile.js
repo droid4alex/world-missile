@@ -1,17 +1,18 @@
 
 export default class Missile {
-  constructor(country, x, y, width, height, color, speed, canvas, c) {
+  constructor(country, x, y, width, height, targetSize, speed, canvas, c) {
     this.country = country
     this.x = x
     this.y = y
-    this.width = width * speed.x
-    this.height = height * speed.y
-    this.color = color  
+    this.width = width
+    this.height = height
+    this.targetSize = targetSize
     this.speed = speed
     this.canvas = canvas
     this.c = c
     this.hovered = false
     this.circled = false
+    this.circlecycle = targetSize * 0.95
     this.radius = 5
     this.timer = 100
     this.img = document.getElementById("missile");    
@@ -28,28 +29,27 @@ export default class Missile {
     this.c.translate(this.x, this.y);
     this.c.rotate(Math.PI / 180 * (this.angle + 90));
     this.c.translate(-this.x, -this.y);
-    this.c.drawImage(this.img, this.x - 10, this.y - 15, 20, 30);
+    this.c.drawImage(this.img, this.x - this.width / 2, this.y - this.height / 2, this.width, this.height);
     this.c.setTransform(1, 0, 0, 1, 0, 0);
     if (this.hovered) {
       this.c.beginPath();
-      this.c.arc(this.x, this.y, 60, 5, 5 * Math.PI);
+      this.c.arc(this.x, this.y, this.targetSize, 5, 5 * Math.PI);
       this.c.strokeStyle = "gray";
       this.c.stroke();
     }
     if (this.circled) {
       this.c.beginPath();
-      this.c.arc(this.x, this.y, 20, 20, 20 * Math.PI);
+      this.c.arc(this.x, this.y, this.circlecycle, 20, 20 * Math.PI);
       this.c.strokeStyle = "red";
       this.c.stroke();
+      this.circlecycle = this.circlecycle - 1 
+      if (this.circlecycle < this.targetSize*0.05){
+        this.circlecycle = this.targetSize*0.95
+      }
     }
   }
 
   increaseSpeed(percent) {
-    // if (this.speed.x > this.speed.y){
-    //   this.speed.x = this.speed.x + (this.speed.x * percent)
-    // } else {
-    //   this.speed.y = this.speed.y + (this.speed.y * percent)
-    // }
     this.speed.x = this.speed.x + (this.speed.x * percent)
     this.speed.y = this.speed.y + (this.speed.y * percent)
   }
@@ -110,7 +110,7 @@ export default class Missile {
 
   renderExplosion() {
     this.exploded = true;
-    if (this.timer > 0) {
+    if (this.timer > 0 && this.radius < this.targetSize*2) {
       this.timer = this.timer - 1
       this.radius = this.radius + 1
       this.c.beginPath();
@@ -122,11 +122,11 @@ export default class Missile {
 
   renderDisarm() {
     this.disarmed = true;
-    if (this.timer > 0) {
+    if (this.timer > 0 && this.targetSize - (this.radius + 2 ) > 0) {
       this.timer = this.timer - 3
       this.radius = this.radius + 2
       this.c.beginPath();
-      this.c.arc(this.x, this.y, 75 - this.radius, 0, 2 * Math.PI, false);
+      this.c.arc(this.x, this.y, this.targetSize - this.radius, 0, 2 * Math.PI, false);
       this.c.fillStyle = 'white';
       this.c.fill();
     }

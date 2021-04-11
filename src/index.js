@@ -186,7 +186,9 @@ function animate() {
 
 function generateMissile() {
   let factor = levelCount * basespeed * .05;
+  console.log("missile basespeed + factor " + basespeed + factor)
   let xSpeed = Math.random() * (basespeed + factor);
+  console.log("missile xSpeed " + xSpeed)
   while (xSpeed > basespeed * 0.9 || xSpeed < basespeed*0.1){
     xSpeed = Math.random() * (1 + factor);
   }
@@ -322,10 +324,11 @@ function showFps(){
     framesCount = 0
   }
   if (seconds > 1){
-    document.getElementById("fps").innerHTML = "Frames Per Second: " + avgFps[avgFps.length - 1];
-    document.getElementById("fps-avg").innerHTML = " Average: " + avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
+    document.getElementById("fps").innerHTML = "Frames Per Second: " + (avgFps[avgFps.length - 1]);
+    document.getElementById("fps-avg").innerHTML = "&nbspAverage: " + (avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length).toFixed(1);
   }
   if (seconds > 2 && basespeed === 1) {
-    basespeed = basespeed + 25 / avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
+    basespeed = basespeed + 20 / avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
+    console.log("Game basespeed" + basespeed)
   }
 }

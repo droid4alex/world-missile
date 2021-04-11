@@ -102,18 +102,10 @@
 #github {
   display: block;
   text-align: left;
+  width: 25%;
 }
 
-#github-a-div {
-  display: block;
-  width: 15%;
-  text-align: left;
-  font-size: 2.8vh;
-  margin-top: 1.5vh;
-  margin-left: 1vh;
-}
-
-#github-a{
+#github a{
   font-family: 'Courier New', Courier, monospace;
   color: black;
   text-decoration: none;
@@ -122,18 +114,10 @@
 #linkedin {
   display: block;
   text-align: right;
+  width: 25%;
 }
 
-#linkedin-a-div {
-  display: block;
-  width: 15%;
-  text-align: right;
-  font-size: 2.8vh;
-  margin-top: 1.5vh;
-  margin-right: 1vh;
-}
-
-#linkedin-a{
+#linkedin a {
   font-family: 'Courier New', Courier, monospace;
   color: black;
   text-decoration: none;
@@ -147,18 +131,18 @@
 #fps {
   margin-top: 1.3vh;
   font: black;
-  font-size: 2.8vh;
-  text-align: center;
-  width: 35%;
+  font-size: 2.5vh;
+  text-align: right;
+  width: 25%;
   font-family: system-ui;
 }
 
 #fps-avg {
   margin-top: 1.3vh;
   font: black;
-  font-size: 2.8vh;
-  text-align: center;
-  width: 35%;
+  font-size: 2.5vh;
+  text-align: left;
+  width: 25%;
   font-family: system-ui;
 }
 

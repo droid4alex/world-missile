@@ -139,19 +139,21 @@ buttonAudio.addEventListener("click", () => {
 });
 
 function animateIdle() {
-  if (!gameStarted && idleCount < 200){
-    requestAnimationFrame(animateIdle);
-    idleCount = idleCount + 1;
-    c.fillRect(Math.random()*4, Math.random()*4, 4+Math.random() * 4, 4+Math.random()*4)
-    timeStop = new Date();
-    if (Math.abs((timeStart.getTime() - timeStop.getTime()) / 100) > idleLogged){
-      idleLogged = idleLogged + 1;
-      if (idleLogged > 1){
-        idleArray.push(Math.round(Math.abs((timeStart.getTime() - timeStop.getTime())) / idleCount * 1000))
-        idleFps = Math.round(idleArray.reduce((acc, el) => acc + el, 0) / idleArray.length);
-        console.log(idleFps);
-      }      
+  timeStop = new Date();
+  idleCount = idleCount + 1;  
+  c.clearRect(0, 0, canvas.width, canvas.height);
+  c.fillRect(0, 0, 1+Math.random() * 5, 1+Math.random()*5)
+  if (Math.abs((timeStart.getTime() - timeStop.getTime()) / 100) > idleLogged) {
+    idleLogged = idleLogged + 1;
+    if (idleLogged > 1) {
+      idleArray.push(idleCount)
+      idleCount = 0;
+      idleFps = idleArray.reduce((acc, el) => acc + el, 0) / idleArray.length;
+      console.log(idleFps);
     }
+  }
+  if (!gameStarted && Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000) < 1.1) {
+    requestAnimationFrame(animateIdle);
   }
 }
 

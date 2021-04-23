@@ -8,9 +8,15 @@ const TRACKS = ["https://github.com/droid4alex/world-missile/blob/main/src/01_be
                 "https://github.com/droid4alex/world-missile/blob/main/src/04_gallentean_refuge.mp3?raw=true"]
 const canvas = document.getElementsByTagName("canvas")[0];
 const c = canvas.getContext('2d');
+const canvasDiv = document.getElementById("canvas-div");
+const img = document.getElementById("world-map");
 const buttonAudio = document.getElementById("buttonAudio");
 const documentAudio = document.querySelector("audio");
+const disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
+const explodedSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/explosion.mp3");
 documentAudio.volume = 0.5;
+disarmSound.volume = 0.5;
+explodedSound.volume = 0.5;
 
 window.onresize = function () { location.reload(); }
 canvas.width = window.innerWidth - (document.getElementById("header").offsetHeight * 2) - document.getElementById("footer").offsetHeight;
@@ -40,7 +46,7 @@ if (missileHeight > 60) {
 }
 
 const numMissiles = 7;
-let timeStart = new Date()
+let timeStart = new Date();
 let timeStop = new Date();
 let seconds = 0;
 let levelCount = 0;
@@ -52,36 +58,19 @@ let disarms = [];
 let explosions = [];
 let targets = [];
 let animateCount = 0;
+let idleCount = 0;
+let idleLogged = 0;
+let idleArray = [];
+let idleFps = 0;
 let countriesDestroyed = "";
 let gameStarted = false;
 let musicTrack = 0;
 let framesCount = 0;
 let avgFps = [];
 let basespeed = 1;
-let perf = window.performance;
-console.log(performance.now())
-console.log(perf.timing.domLoading - perf.timeOrigin)
-
-let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
-disarmSound.volume = 0.5;
-
-let explodedSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/explosion.mp3");
-explodedSound.volume = 0.5;
-
-let img = document.getElementById("world-map");
-img.width = canvas.width;
-img.height = canvas.height;
-
-let imgIntro = document.getElementById("world-map-intro");
-imgIntro.width = canvas.width;
-imgIntro.height = canvas.height;
-imgIntro.onload = function () {
-  c.drawImage(imgIntro, 0, 0, canvas.width, canvas.height);
-  }
-c.drawImage(imgIntro, 0, 0, canvas.width, canvas.height);
 
 function startGame() {
-  document.getElementById("canvas").style.cursor = "crosshair";
+  canvasDiv.style.backgroundImage = "url(" + img.src + ")";
   startLevel();
   animate();
   documentAudio.play();
@@ -149,11 +138,27 @@ buttonAudio.addEventListener("click", () => {
   }
 });
 
+function animateIdle() {
+  if (!gameStarted && idleCount < 200){
+    requestAnimationFrame(animateIdle);
+    idleCount = idleCount + 1;
+    c.fillRect(Math.random()*4, Math.random()*4, 4+Math.random() * 4, 4+Math.random()*4)
+    timeStop = new Date();
+    if (Math.abs((timeStart.getTime() - timeStop.getTime()) / 100) > idleLogged){
+      idleLogged = idleLogged + 1;
+      if (idleLogged > 1){
+        idleArray.push(Math.round(Math.abs((timeStart.getTime() - timeStop.getTime())) / idleCount * 1000))
+        idleFps = Math.round(idleArray.reduce((acc, el) => acc + el, 0) / idleArray.length);
+        console.log(idleFps);
+      }      
+    }
+  }
+}
+
 function animate() {
   requestAnimationFrame(animate);
   animateCount = animateCount + 1;
   c.clearRect(0, 0, canvas.width, canvas.height);
-  c.drawImage(img, 0, 0, canvas.width, canvas.height);
   timeStop = new Date();
   seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
   missiles.forEach(missile => {
@@ -188,17 +193,15 @@ function animate() {
 }
 
 function generateMissile() {
-  perf = window.performance;
-  console.log(performance.now())
-  console.log(perf.timing.domLoading - perf.timeOrigin)
+  console.log(idleFps);
   let factor = levelCount * basespeed * .05;
-  console.log("missile basespeed + factor " + basespeed + factor)
   let xSpeed = Math.random() * (basespeed + factor);
-  console.log("missile xSpeed " + xSpeed)
   while (xSpeed > basespeed * 0.9 || xSpeed < basespeed*0.1){
     xSpeed = Math.random() * (1 + factor);
   }
   let ySpeed = (basespeed + factor) - xSpeed;
+  console.log("xSpeed " + xSpeed)
+  console.log("ySpeed " + ySpeed)
   if ((Math.random() * 2) >= 1) {
     xSpeed = xSpeed * -1;
   }
@@ -335,6 +338,8 @@ function showFps(){
   }
   if (seconds > 2 && basespeed === 1) {
     basespeed = basespeed + 20 / avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
-    console.log("Game basespeed" + basespeed)
+    console.log("Basespeed updated to: " + basespeed)
   }
 }
+
+animateIdle();

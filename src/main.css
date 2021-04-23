@@ -128,12 +128,21 @@
   text-align: left;
 }
 
+#perf {
+  margin-top: 1.3vh;
+  font: black;
+  font-size: 2.5vh;
+  text-align: left;
+  width: 16.67%;
+  font-family: system-ui;
+}
+
 #fps {
   margin-top: 1.3vh;
   font: black;
   font-size: 2.5vh;
   text-align: right;
-  width: 25%;
+  width: 16.67%;
   font-family: system-ui;
 }
 
@@ -142,7 +151,7 @@
   font: black;
   font-size: 2.5vh;
   text-align: left;
-  width: 25%;
+  width: 16.67%;
   font-family: system-ui;
 }
 

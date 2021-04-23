@@ -58,6 +58,9 @@ let musicTrack = 0;
 let framesCount = 0;
 let avgFps = [];
 let basespeed = 1;
+let perf = window.performance;
+console.log(performance.now())
+console.log(perf.timing.domLoading - perf.timeOrigin)
 
 let disarmSound = new Audio("https://raw.githubusercontent.com/droid4alex/world-missile/main/src/disarm.mp3");
 disarmSound.volume = 0.5;
@@ -185,6 +188,9 @@ function animate() {
 }
 
 function generateMissile() {
+  perf = window.performance;
+  console.log(performance.now())
+  console.log(perf.timing.domLoading - perf.timeOrigin)
   let factor = levelCount * basespeed * .05;
   console.log("missile basespeed + factor " + basespeed + factor)
   let xSpeed = Math.random() * (basespeed + factor);

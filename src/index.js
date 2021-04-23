@@ -61,7 +61,7 @@ let animateCount = 0;
 let idleCount = 0;
 let idleLogged = 0;
 let idleArray = [];
-let idleFps = 0;
+let idleFps = 10;
 let countriesDestroyed = "";
 let gameStarted = false;
 let musicTrack = 0;
@@ -70,6 +70,7 @@ let avgFps = [];
 let basespeed = 1;
 
 function startGame() {
+
   canvasDiv.style.backgroundImage = "url(" + img.src + ")";
   startLevel();
   animate();
@@ -149,7 +150,6 @@ function animateIdle() {
       idleArray.push(idleCount)
       idleCount = 0;
       idleFps = idleArray.reduce((acc, el) => acc + el, 0) / idleArray.length;
-      console.log(idleFps);
     }
   }
   if (!gameStarted && Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000) < 1.1) {
@@ -195,15 +195,15 @@ function animate() {
 }
 
 function generateMissile() {
-  console.log(idleFps);
-  let factor = levelCount * basespeed * .05;
+  if (idleFps < 7){
+    basespeed = 8 - idleFps;
+  }  
+  let factor = levelCount * .05;
   let xSpeed = Math.random() * (basespeed + factor);
   while (xSpeed > basespeed * 0.9 || xSpeed < basespeed*0.1){
     xSpeed = Math.random() * (1 + factor);
   }
   let ySpeed = (basespeed + factor) - xSpeed;
-  console.log("xSpeed " + xSpeed)
-  console.log("ySpeed " + ySpeed)
   if ((Math.random() * 2) >= 1) {
     xSpeed = xSpeed * -1;
   }
@@ -337,10 +337,6 @@ function showFps(){
   if (seconds > 1){
     document.getElementById("fps").innerHTML = "Frames Per Second: " + (avgFps[avgFps.length - 1]);
     document.getElementById("fps-avg").innerHTML = "&nbspAverage: " + (avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length).toFixed(1);
-  }
-  if (seconds > 2 && basespeed === 1) {
-    basespeed = basespeed + 20 / avgFps.reduce((acc, el) => acc + el, 0) / avgFps.length;
-    console.log("Basespeed updated to: " + basespeed)
   }
 }
 

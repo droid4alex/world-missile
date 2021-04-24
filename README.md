@@ -1,4 +1,6 @@
-# world-missile
+# World Missile App Game
+
+### [Visit the Live Site](https://pantrypal-app.herokuapp.com/#/)
 
 ### Background/Summary
 * Player saves the world by intercepting missiles after they've been fired. Missiles launch from random continents each level in greater numbers and faster intervals. Player intercepts missiles by using mouse movement and mouse click.

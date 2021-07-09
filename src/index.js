@@ -273,9 +273,9 @@ function checkVictory(){
   let message;
   if (numMissiles + levelCount*3 === disarmedCount + explodedCount) {
     if (explodedCount > 0){
-      message = "Level " + levelCount + " complete.\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n" + explodedCount + " missiles exploded.\n";
+      message = "Level " + levelCount + " complete.\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n\n" + explodedCount + " exploded:";
     } else {
-      message = "Perfect! Level " + levelCount + " complete.\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n";
+      message = "Perfect!\n\nLevel " + levelCount + " complete.\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.";
     }
     alert(message + countriesDestroyed);
     startLevel();
@@ -285,7 +285,7 @@ function checkVictory(){
 function checkLoss(){
   let message;
   if (explodedCount === 10) {
-    message = "Game Over! " + explodedCount + " missiles exploded.\n";
+    message = "Game Over! " + explodedCount + " missiles exploded.";
     alert(message + countriesDestroyed);    
     documentAudio.currentTime = 0;
     musicTrack = musicTrack + 1;
@@ -305,7 +305,7 @@ function countryHit() {
   let missilesRemaining = [];
   missiles.forEach(missile => {
     if(missile.country.inRange(missile.x, missile.y)){
-      countriesDestroyed = countriesDestroyed + "\n" + missile.country.countryName + " hit " + missile.country.targetName;
+      countriesDestroyed = countriesDestroyed + "\n• " + missile.country.countryName + " hit " + missile.country.targetName;
       explodedCount = explodedCount + 1;
       document.getElementById("exploded-count").innerHTML = explodedCount;
       if (scoreCount - 300 >= 0){

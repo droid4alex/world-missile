@@ -39,6 +39,7 @@
 #level-count-img{
   width: 14vh;
   margin-right: 2vh;
+  margin-left: 1vh;
 }
 #level-count {
   display: block;
@@ -91,7 +92,7 @@
 
 #buttonAudio{
   margin-right: 0.8vh;
-  height: 3.8vh;
+  height: 4.4vh;
   cursor: pointer;
 }
 
@@ -130,6 +131,7 @@
 #github-white {
   display: block;
   text-align: left;
+  width: 0.0001%;
 }
 
 #fps {

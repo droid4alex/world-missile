@@ -45,7 +45,8 @@ if (missileHeight > 60) {
   missileHeight = 60
 }
 
-const numMissiles = 7;
+const numMissiles = 9;
+let numMissilesIncrease = 0;
 let timeStart = new Date();
 let timeStop = new Date();
 let seconds = 0;
@@ -70,7 +71,6 @@ let avgFps = [];
 let basespeed = 1;
 
 function startGame() {
-
   canvasDiv.style.backgroundImage = "url(" + img.src + ")";
   startLevel();
   animate();
@@ -239,7 +239,7 @@ function startLevel(){
   timeStart = new Date();
   levelCount = levelCount + 1;
   document.getElementById("level-count").innerHTML = levelCount;
-  document.getElementById("missile-count").innerHTML = (numMissiles + levelCount * 3);
+  document.getElementById("missile-count").innerHTML = (numMissiles + levelCount + numMissilesIncrease);
   let random = Math.floor(Math.random() * 5);
   for (let i = 0; i < COUNTRIES.length; i++) {
     random = Math.floor(Math.random() * 5);
@@ -270,20 +270,61 @@ function startLevel(){
       new Country(COUNTRIES[i].countryName, startX, startY, COUNTRIES[random].countryName, COUNTRIES[random].x, COUNTRIES[random].y, targetSize, canvas)
       )
     }
-    for (let i = 0; i < (numMissiles + levelCount*3); i++){
+    for (let i = 0; i < (numMissiles + levelCount+ numMissilesIncrease); i++){
       generateMissile();
     }
+  missiles.forEach(missile => {
+    console.log(missile.speed)
+    missile.increaseSpeed(levelCount * (.06))
+    console.log(missile.speed)
+  })
+  console.log("end")
 }
 
 function checkVictory(){
   let message;
-  if (numMissiles + levelCount*3 === disarmedCount + explodedCount) {
+  let additionalMessage;
+  switch (levelCount) {
+    case 2:
+      additionalMessage = " Just warming up... :) ";
+      break;
+    case 3:
+      additionalMessage = " You lose the game if 10 missiles explode. ";
+      break;
+    case 4:
+      additionalMessage = " Number of missiles increasing! ";
+      break;
+    case 5:
+      additionalMessage = " Halfway to level 10. Keep it up! ";
+      break;
+    case 6:
+      additionalMessage = " Missile is velocity increasing! ";
+      break;
+    case 7:
+      additionalMessage = " Try not to start any wildfires... ";
+      break;
+    case 8:
+      additionalMessage = " Doing good, keep on saving lives.  ";
+      break;
+    case 9:
+      additionalMessage = " Almost there! ";
+      break;
+    case 10:
+      additionalMessage = " CONGRATS!!! YOU MADE IT. You are a top World Missile player and nuclear apocalpyse defender. (from here on, things just get ridiculous, so you may just want to visit my GitHub instead). Bye!";
+      break;      
+    default:
+      additionalMessage = "";
+  }
+  if (numMissiles + levelCount + numMissilesIncrease === disarmedCount + explodedCount) {
     if (explodedCount > 0){
-      message = "Level " + levelCount + " complete.\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n\n" + explodedCount + " exploded:";
+      message = "Level " + levelCount + " complete." + additionalMessage + "\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n\n" + explodedCount + " exploded:";
     } else {
-      message = "Perfect!\n\nLevel " + levelCount + " complete.\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.";
+      message = "Perfect!\n\nLevel " + levelCount + " complete." + additionalMessage + "\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.";
     }
     alert(message + countriesDestroyed);
+    if (levelCount >= 10){
+      numMissilesIncrease = numMissilesIncrease + 5 + Math.floor(Math.random() * 10);
+    }
     startLevel();
   }
 }

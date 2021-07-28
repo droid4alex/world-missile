@@ -289,16 +289,16 @@ function checkVictory(){
       additionalMessage = " Just warming up... :) ";
       break;
     case 3:
-      additionalMessage = " You lose the game if 10 missiles explode. ";
+      additionalMessage = " You will lose the game if 10 missiles explode. ";
       break;
     case 4:
       additionalMessage = " Number of missiles increasing! ";
       break;
     case 5:
-      additionalMessage = " Halfway to level 10. Keep it up! ";
+      additionalMessage = " Keep it up! Halfway to level 10. ";
       break;
     case 6:
-      additionalMessage = " Missile is velocity increasing! ";
+      additionalMessage = " Missile velocity is also increasing! ";
       break;
     case 7:
       additionalMessage = " Try not to start any wildfires... ";
@@ -310,16 +310,16 @@ function checkVictory(){
       additionalMessage = " Almost there! ";
       break;
     case 10:
-      additionalMessage = " CONGRATS!!! YOU MADE IT. You are a top World Missile player and nuclear apocalpyse defender. (from here on, things just get ridiculous, so you may just want to visit my GitHub instead). Bye!";
+      additionalMessage = " CONGRATS!!! YOU MADE IT. You are a top World Missile player and nuclear apocalpyse defender! (From here on, things just get ridiculous, so you may just want to visit my GitHub instead). Bye!";
       break;      
     default:
       additionalMessage = "";
   }
   if (numMissiles + levelCount + numMissilesIncrease === disarmedCount + explodedCount) {
     if (explodedCount > 0){
-      message = "Level " + levelCount + " complete." + additionalMessage + "\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n\n" + explodedCount + " exploded:";
+      message = "Level " + levelCount + " complete." + additionalMessage + "\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.\n" + explodedCount + " missiles exploded:";
     } else {
-      message = "Perfect!\n\nLevel " + levelCount + " complete." + additionalMessage + "\n\n" + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.";
+      message = "Level " + levelCount + " complete." + additionalMessage + "\n\n" + "Perfect! " + disarmedCount + " missiles disarmed in " + seconds.toFixed(2) + " seconds.";
     }
     alert(message + countriesDestroyed);
     if (levelCount >= 10){
@@ -343,6 +343,7 @@ function checkLoss(){
     documentAudio.play();
     levelCount = 0;
     scoreCount = 0;
+    // numMissilesIncrease = 0;   Commented out. Player keeps their high missile count if they make it past level 10.
     document.getElementById("score-count").innerHTML = scoreCount;
     startLevel();
   }

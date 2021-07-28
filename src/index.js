@@ -125,6 +125,9 @@ canvas.addEventListener('mousemove', (e) => {
 
 buttonAudio.addEventListener("click", () => {
   if (documentAudio.paused) {
+    buttonAudio.src = "https://raw.githubusercontent.com/droid4alex/world-missile/main/src/music-on.PNG";
+    disarmSound.volume = 0.5;
+    explodedSound.volume = 0.5;
     musicTrack = musicTrack + 1;
     if (musicTrack >= TRACKS.length) {
       musicTrack = 0;
@@ -134,6 +137,9 @@ buttonAudio.addEventListener("click", () => {
     documentAudio.play();
 
   } else {
+    buttonAudio.src = "https://raw.githubusercontent.com/droid4alex/world-missile/main/src/music-off.PNG";
+    disarmSound.volume = 0.0;
+    explodedSound.volume = 0.0;
     documentAudio.currentTime = 0;
     documentAudio.pause();
   }

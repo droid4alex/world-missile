@@ -224,6 +224,7 @@ function animate() {
   requestAnimationFrame(animate);
   animateCount = animateCount + 1;
   animateCountFrozen = animateCountFrozen + 1;
+  let frozen = false;
   c.clearRect(0, 0, canvas.width, canvas.height);
   timeStop = new Date();
   seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
@@ -231,6 +232,9 @@ function animate() {
     missile.animateCount = missile.animateCount + 1
     missile.render();
     missile.fly();
+    if (missile.frozen){
+      frozen = true;
+    }
   })
   disarms.forEach(missile => {
     if (missile.disarmed === false) {
@@ -246,8 +250,9 @@ function animate() {
     }
     missile.renderExplosion();
   })
-  if (animateCountFrozen > 250 && missiles[0].frozen) {
+  if (animateCountFrozen > 250 && frozen) {
     animateCountFrozen = 0;
+    frozen = false;
     missiles.forEach(missile => {
       missile.freezeMissile()
     })

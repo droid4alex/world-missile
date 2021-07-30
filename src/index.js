@@ -64,6 +64,7 @@ let disarms = [];
 let explosions = [];
 let targets = [];
 let animateCount = 0;
+let animateCountFrozen = 0;
 let idleCount = 0;
 let idleLogged = 0;
 let idleArray = [];
@@ -156,6 +157,7 @@ imgLevel.addEventListener("click", () => {
 });
 
 imgMissile.addEventListener("click", () => {
+  animateCountFrozen = 0;
   missiles.forEach(missile => {
     missile.freezeMissile();
   })
@@ -221,6 +223,7 @@ function animateIdle() {
 function animate() {
   requestAnimationFrame(animate);
   animateCount = animateCount + 1;
+  animateCountFrozen = animateCountFrozen + 1;
   c.clearRect(0, 0, canvas.width, canvas.height);
   timeStop = new Date();
   seconds = Math.abs((timeStart.getTime() - timeStop.getTime()) / 1000);
@@ -243,6 +246,13 @@ function animate() {
     }
     missile.renderExplosion();
   })
+  if (animateCountFrozen > 250 && missiles[0].frozen) {
+    animateCountFrozen = 0;
+    missiles.forEach(missile => {
+      missile.freezeMissile()
+    })
+    console.log("Missiles unfrozen!")
+  }
   if (animateCount > 50 && seconds > 5) {
     animateCount = 0;
     missiles.forEach(missile => {

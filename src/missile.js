@@ -21,6 +21,8 @@ export default class Missile {
     this.disarmed = false
     this.exploded = false
     this.animateCount = 0
+    this.frozen = false
+    this.slowed = 4
   }
 
   render() {
@@ -75,19 +77,21 @@ export default class Missile {
   }
 
   fly(){
-    this.x = this.x + this.speed.x
-    this.y = this.y + this.speed.y
-    if (this.x < 0){
-      this.x = this.canvas.width
-    }
-    if (this.x > this.canvas.width) {
-      this.x = 0
-    }
-    if (this.y < 0) {
-      this.y = this.canvas.height
-    }
-    if (this.y > this.canvas.height) {
-      this.y = 0
+    if (!this.frozen){
+      this.x = this.x + this.speed.x
+      this.y = this.y + this.speed.y
+      if (this.x < 0){
+        this.x = this.canvas.width
+      }
+      if (this.x > this.canvas.width) {
+        this.x = 0
+      }
+      if (this.y < 0) {
+        this.y = this.canvas.height
+      }
+      if (this.y > this.canvas.height) {
+        this.y = 0
+      }
     }
   }
 
@@ -130,6 +134,19 @@ export default class Missile {
       this.c.fillStyle = 'white';
       this.c.fill();
     }
+  }
+
+  freezeMissile() {
+    this.frozen = !this.frozen
+    if (this.frozen){
+      let message;
+      message = "Missile from " + this.country.countryName + " to " + this.country.targetName + " frozen!\nX:" + Math.round(this.x) + " Y: " + Math.round(this.y)
+      console.log(message)
+    }
+  }
+
+  slowMissile(){
+    this.slowed = this.slowed - 1
   }
 }
 

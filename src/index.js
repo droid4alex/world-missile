@@ -185,21 +185,19 @@ imgExploded.addEventListener("click", () => {
 });
 
 imgScore.addEventListener("click", () => {
-  if (missiles[0].slowed > 0){
-    let x = Math.floor(Math.random() * 20);
-    for (let i = 0; i < 5 + x; i++) {
-      generateMissile()
-    }
-    numMissilesIncrease = numMissilesIncrease + 5 + x;
-    document.getElementById("missile-count").innerHTML = (numMissiles + levelCount + numMissilesIncrease);
-    missiles.forEach(missile => {
-      if (missile.slowed > 0) {
-        missile.increaseSpeed(-.5)
-        missile.slowMissile()
-      }
-    })
-    console.log((5 + x) + " missiles generated. x" + (4 - missiles[0].slowed))
+  let x = Math.floor(Math.random() * 20);
+  for (let i = 0; i < 5 + x; i++) {
+    generateMissile()
   }
+  numMissilesIncrease = numMissilesIncrease + 5 + x;
+  document.getElementById("missile-count").innerHTML = (numMissiles + levelCount + numMissilesIncrease);
+  missiles.forEach(missile => {
+    if (missile.slowed > 0) {
+      missile.increaseSpeed(-.5)
+      missile.slowMissile()
+    }
+  })
+  console.log((5 + x) + " missiles generated. x" + (4 - missiles[0].slowed))
 });
 
 function animateIdle() {

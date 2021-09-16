@@ -64,6 +64,7 @@ let disarms = [];
 let explosions = [];
 let targets = [];
 let animateCount = 0;
+let animateCountNewMissileLaunch = 0;
 let animateCountFrozen = 0;
 let idleCount = 0;
 let idleLogged = 0;
@@ -169,7 +170,7 @@ imgDisarmed.addEventListener("click", () => {
     if(missile.slowed > 0){
       missile.increaseSpeed(-.5)
       missile.slowMissile()
-      message = "All missiles slowed. x" + (4 - missile.slowed)
+      message = "All missiles slowed."
     }
   })
   if (message != ""){
@@ -222,6 +223,7 @@ function animate() {
   requestAnimationFrame(animate);
   animateCount = animateCount + 1;
   animateCountFrozen = animateCountFrozen + 1;
+  animateCountNewMissileLaunch = animateCountNewMissileLaunch + 1;
   let frozen = false;
   c.clearRect(0, 0, canvas.width, canvas.height);
   timeStop = new Date();
@@ -256,12 +258,19 @@ function animate() {
     })
     console.log("Missiles unfrozen!")
   }
-  if (animateCount > 50 && seconds > 5) {
+  if (animateCount > 125 && seconds > 5) {
     animateCount = 0;
     missiles.forEach(missile => {
-      missile.increaseSpeed(.01)
-    })
-  }  
+      missile.increaseSpeed(.015)
+    })    
+  }
+  if (animateCountNewMissileLaunch > 1000 && seconds > 5) {
+    animateCountNewMissileLaunch = 0;
+    generateMissile()
+    numMissilesIncrease = numMissilesIncrease + 1;
+    document.getElementById("missile-count").innerHTML = (numMissiles + levelCount + numMissilesIncrease);
+  }
+  
   countryHit();
   checkVictory();
   checkLoss();
@@ -363,11 +372,14 @@ function checkVictory(){
   let message;
   let additionalMessage;
   switch (levelCount) {
+    case 1:
+      additionalMessage = " Click on header images for hacks!";
+      break;
     case 2:
       additionalMessage = ".. Just warming up :) ";
       break;
     case 3:
-      additionalMessage = ".. You lose if 10 missiles explode. ";
+      additionalMessage = ".. You lose if 10 missiles explode, btw. ";
       break;
     case 4:
       additionalMessage = ".. Number of missiles increasing! ";

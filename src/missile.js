@@ -56,6 +56,11 @@ export default class Missile {
     this.speed.y = this.speed.y + (this.speed.y * percent)
   }
 
+  decreaseSpeed(percent) {
+    this.speed.x = this.speed.x - (this.speed.x * percent)
+    this.speed.y = this.speed.y - (this.speed.y * percent)
+  }
+
   changeDirection(){
     let max = Math.abs(this.speed.x) + Math.abs(this.speed.y)
     let xSpeed = Math.random() * (max);

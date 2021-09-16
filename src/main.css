@@ -38,7 +38,7 @@
 
 #level-count-img{
   width: 14vh;
-  margin-right: 2vh;
+  margin-right: 0.2vh;
   margin-left: 1vh;
 }
 #level-count {
@@ -50,7 +50,7 @@
 #missile-count-img{
   width: 18vh;
   height: 3.3vh;
-  margin-right: 2vh;
+  margin-right: 0.2vh;
 }
 #missile-count{
   display: block;
@@ -62,7 +62,7 @@
 #exploded-count-img{
   width: 18vh;
   height: 3.1vh;
-  margin-right: 2vh;
+  margin-right: 0.2vh;
 }
 #exploded-count {
   display: block;
@@ -73,7 +73,7 @@
 #disarmed-count-img{
   width: 19vh;
   height: 2.8vh;
-  margin-right: 2vh;
+  margin-right: 0.2vh;
 }
 #disarmed-count {
   display: block;
@@ -83,7 +83,7 @@
 #score-count-img{
   width: 12vh;
   height: 2.8vh;
-  margin-right: 2vh;
+  margin-right: 0.2vh;
 }
 #score-count {
   display: block;

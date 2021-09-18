@@ -264,7 +264,7 @@ function animate() {
       missile.increaseSpeed(.015)
     })    
   }
-  if (animateCountNewMissileLaunch > 1000 && seconds > 5) {
+  if (animateCountNewMissileLaunch > 375 && seconds > 5) {
     animateCountNewMissileLaunch = 0;
     generateMissile()
     numMissilesIncrease = numMissilesIncrease + 1;
